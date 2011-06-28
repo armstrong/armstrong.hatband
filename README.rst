@@ -1,5 +1,5 @@
-armstrong.admin2
-================
+armstrong.hatband
+=================
 Provides administrative interface and utilities for use in `Armstrong`_.
 
 
@@ -17,7 +17,7 @@ Installation
 
 ::
 
-    name="armstrong.admin2"
+    name="armstrong.hatband"
     pip install -e git://github.com/armstrong/$name.git#egg=$name
 
 
