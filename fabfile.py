@@ -8,7 +8,7 @@ settings = {
         'django.contrib.contenttypes',
         'django.contrib.sessions',
         'armstrong.hatband',
-        'armstrong.hatband.tests.admin2_support',
+        'armstrong.hatband.tests.hatband_support',
         'lettuce.django',
     ),
 }
