@@ -11,9 +11,11 @@ settings = {
         'armstrong.hatband.tests.hatband_support',
         'lettuce.django',
     ),
+    'STATIC_URL': '/TESTING/',
 }
 
 main_app = "hatband"
 tested_apps = ("hatband_support", "hatband", )
 full_name = "armstrong.hatband"
 pip_install_first = True
+
