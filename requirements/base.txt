@@ -1,1 +1,2 @@
 django>=1.3
+armstrong.utils.backends>=0.2

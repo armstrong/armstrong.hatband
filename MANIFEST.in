@@ -1,0 +1,4 @@
+include README.rst
+include package.json
+include LICENSE
+prune build
