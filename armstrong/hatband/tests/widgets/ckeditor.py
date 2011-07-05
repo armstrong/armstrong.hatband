@@ -14,5 +14,3 @@ class CKEditorTestCase(HatbandTestCase):
         widget = CKEditorWidget(attrs={'class': 'something'})
         htmlout = widget.render('widget', '')
         self.assertTrue('class="something ckeditor"' in htmlout)
-
-    

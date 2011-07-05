@@ -8,7 +8,9 @@ class HatbandTestCase(ArmstrongTestCase):
 
 class HatbandTestMixin(object):
 
-    script_code = '<script type="text/javascript" src="/static/ckeditor/ckeditor.js"></script>'
+    script_code = """
+    <script type="text/javascript" src="/static/ckeditor/ckeditor.js"></script>
+    """.strip()
     textarea_code = 'class="ckeditor"></textarea>'
 
     def assertCkEditorPresent(self, response):
