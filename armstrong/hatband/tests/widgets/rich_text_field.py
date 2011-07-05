@@ -12,21 +12,13 @@ class RichTextFieldTestCase(HatbandTestCase):
         widget_out = str(widget.render('widget', ''))
         self.assertEquals(ckeditor_out, widget_out)
     
-    #@override_settings(ARMSTRONG_HATBAND_RICHTEXTEDITOR='django.forms.widgets.Textarea')
     def test_non_default_setting(self):
-        if (hasattr(settings, 'ARMSTRONG_HATBAND_RICHTEXTEDITOR')):
-            old_setting = settings.ARMSTRONG_HATBAND_RICHTEXTEDITOR
-        else:
-            old_setting = None
-        settings.ARMSTRONG_HATBAND_RICHTEXTEDITOR = 'django.forms.widgets.Textarea'
-        
-        textarea = Textarea()
-        widget = RichTextWidget()
-        textarea_out = str(textarea.render('widget', '')) 
-        widget_out = str(widget.render('widget', ''))
-        
-        settings.ARMSTRONG_HATBAND_RICHTEXTEDITOR = old_setting
-        self.assertEquals(textarea_out, widget_out)
+        with self.settings(ARMSTRONG_HATBAND_RICHTEXTEDITOR='django.forms.widgets.Textarea'):
+            textarea = Textarea()
+            widget = RichTextWidget()
+            textarea_out = str(textarea.render('widget', '')) 
+            widget_out = str(widget.render('widget', ''))
+            self.assertEquals(textarea_out, widget_out)
     
     def test_kwargs_passthrough(self):
         attrs = {'cols':50, 'class':'something'}
