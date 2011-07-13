@@ -18,7 +18,10 @@ class HatbandAndDjangoRegistry(object):
         return iter(self.items())
 
     def __contains__(self, k):
-        return k in self._registry or k in django_site._registry
+        for d in self.dicts:
+            if k in d:
+                return True
+        return False
 
 
 class AdminSite(DjangoAdminSite):
