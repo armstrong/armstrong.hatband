@@ -1,5 +1,6 @@
 from pkgutil import extend_path
 __path__ = extend_path(__path__, __name__)
 
-from armstrong.hatband.widgets.base import RichTextWidget
-from armstrong.hatband.widgets.ckeditor import CKEditorWidget
+from django.contrib.admin.widgets import *
+from .base import RichTextWidget
+from .ckeditor import CKEditorWidget
