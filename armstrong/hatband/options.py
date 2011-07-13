@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.db import models
-from armstrong.hatband import widgets
+from . import widgets
 
 RICH_TEXT_DBFIELD_OVERRIDES = {
     models.TextField: {'widget': widgets.RichTextWidget},
