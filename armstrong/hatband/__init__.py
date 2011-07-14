@@ -13,7 +13,7 @@ from armstrong.hatband.sites import AdminSite, site
 # This is copied directly from Django as there is no way to specify what `site`
 # object you want to use inside `autodiscover`.  This is important for Hatband,
 # as all of Armstrong will eventually use `from armstrong import hatband as
-# admin` and us Hatband's `site` value.
+# admin` and use Hatband's `site` value.
 #
 # TODO: keep this in sync with django.contrib.admin.autodiscover (ongoing)
 def autodiscover():
