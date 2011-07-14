@@ -27,13 +27,6 @@ class HatbandAndDjangoRegistry(object):
 
 
 class AdminSite(DjangoAdminSite):
-    def __init__(self, default_site=None, *args, **kwargs):
-        if default_site is None:
-            default_site = django_site
-        super(AdminSite, self).__init__(*args, **kwargs)
-        self._registry = HatbandAndDjangoRegistry(self,
-                default_site=default_site)
-
     def get_urls(self):
         from django.conf.urls.defaults import patterns, url
 
@@ -43,3 +36,4 @@ class AdminSite(DjangoAdminSite):
 
 
 site = AdminSite()
+site._registry = HatbandAndDjangoRegistry(site, default_site=django_site)
