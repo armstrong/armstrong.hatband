@@ -25,6 +25,9 @@ class HatbandAndDjangoRegistry(object):
                 return True
         return False
 
+    def __setitem__(self, k, v):
+        self._registry[k] = v
+
 
 class AdminSite(DjangoAdminSite):
     def get_urls(self):
