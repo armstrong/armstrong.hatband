@@ -1,5 +1,4 @@
 from armstrong.dev.tests.utils import ArmstrongTestCase
-from django.utils import unittest
 
 
 class HatbandTestCase(ArmstrongTestCase):
