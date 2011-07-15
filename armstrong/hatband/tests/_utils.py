@@ -1,4 +1,10 @@
 from armstrong.dev.tests.utils import ArmstrongTestCase
+import random
+
+
+def random_range():
+    # TODO: make sure this can only be generated once
+    return range(random.randint(1000, 2000))
 
 
 class HatbandTestCase(ArmstrongTestCase):
