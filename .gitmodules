@@ -1,0 +1,3 @@
+[submodule "vendor/visualsearch"]
+	path = vendor/visualsearch
+	url = git://github.com/documentcloud/visualsearch.git
