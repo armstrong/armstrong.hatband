@@ -1,0 +1,11 @@
+<div style="width:720px;">
+    <div id="generic_key_{{ widget_id }}" style=""></div>
+</div>
+
+<script type="text/javascript">
+    armstrong.widgets.generickey(django.jQuery, "#generic_key_{{ widget_id }}",
+      {
+        facetURL: "{% url admin:generic_key_facets %}"
+      }
+    );
+</script>
