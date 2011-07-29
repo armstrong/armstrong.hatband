@@ -4,10 +4,10 @@ armstrong.widgets = armstrong.widgets || {};
 
 armstrong.widgets.generickey = function($, id, options) {
   $(document).ready(function() {
-    console.log("wiring up armstrong.widgets.generickey");
     var facets = {
       inFlight: false,
-      data: false
+      data: [],
+      raw: false,
     };
     VS.init({
       container  : $(id),
@@ -23,7 +23,7 @@ armstrong.widgets.generickey = function($, id, options) {
           console.log(query);
         },
         facetMatches : function(callback) {
-          if (facets.data) {
+          if (facets.data.length > 0) {
             console.log("returning facets");
             console.log(facets.data);
             callback(facets.data);
@@ -33,7 +33,10 @@ armstrong.widgets.generickey = function($, id, options) {
             $.getJSON(options.facetURL, function(data) {
               console.log("return from server");
               console.log(data);
-              facets.data = data;
+              facets.raw = data;
+              for (key in data) {
+                facets.data.push(key);
+              }
               callback(facets.data);
               facets.inFlight = false;
             });
@@ -42,7 +45,18 @@ armstrong.widgets.generickey = function($, id, options) {
           }
         },
         valueMatches : function(facet, searchTerm, callback) {
-          callback(["An article", "Some random data", "Awesomeness!"]);
+          var app_label = facets.raw[facet],
+              model = facet;
+          console.log(app_label, model);
+          // TODO: don't pound the server
+          $.getJSON("/admin/" + app_label + "/" + model + "/search/", {q: searchTerm}, function(data) {
+            var result = [], match;
+            for (idx in data.names) {
+              match = data.names[idx];
+              result.push(match.text);
+            }
+            callback(result);
+          });
         }
       }
     });

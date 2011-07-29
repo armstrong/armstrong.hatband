@@ -1,0 +1,10 @@
+{
+    "names": [
+        {% for item in cl.result_list %}
+        {
+            "text": "{{ item }}",
+            "model_id": {{ item.pk }}
+        }{% if not forloop.last %},{% endif %}
+        {% endfor %}
+    ]
+}
