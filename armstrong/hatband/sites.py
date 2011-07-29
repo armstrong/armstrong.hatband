@@ -61,9 +61,10 @@ class AdminSite(DjangoAdminSite):
         for app_label, model in EXCLUDED_MODELS_FROM_FACETS:
             excluded_models = excluded_models | Q(app_label=app_label,
                     model=model)
-        content_types = ContentType.objects.values_list("model", "app_label") \
+        values = "model", "app_label", "id"
+        content_types = ContentType.objects.values_list(*values) \
                 .exclude(excluded_apps | excluded_models)
-        return dict([(str(a), str(b)) for a, b in content_types])
+        return dict([(str(a), {"app_label": str(b), "id": str(c)}) for a, b, c in content_types])
 
     def generic_key_modelsearch(self, request, app_label, model_name):
         # TODO: deal with missing/bad requests

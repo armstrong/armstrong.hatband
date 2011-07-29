@@ -10,7 +10,7 @@ armstrong.widgets.generickey = function($, id, options) {
       raw: false,
     };
     VS.init({
-      container  : $(id),
+      container  : $("#generic_key_" + id),
       query      : '',
       unquotable : [
         'text',
@@ -20,7 +20,15 @@ armstrong.widgets.generickey = function($, id, options) {
       ],
       callbacks  : {
         search : function(query) {
-          console.log(query);
+          if (query.length <= 0) {
+            return;
+          }
+          var result = query.split(":", 2),
+              model = result[0],
+              content_type_id = facets.raw[model].id,
+              model_id = result[1].slice(2); // ditch the ' "'
+          $("#" + id).val(model_id);
+          $("#" + id.replace("object_id", "content_type")).val(content_type_id);
         },
         facetMatches : function(callback) {
           if (facets.data.length > 0) {
@@ -38,7 +46,7 @@ armstrong.widgets.generickey = function($, id, options) {
           }
         },
         valueMatches : function(facet, searchTerm, callback) {
-          var app_label = facets.raw[facet],
+          var app_label = facets.raw[facet].app_label,
               model = facet;
           // TODO: don't pound the server
           $.getJSON("/admin/" + app_label + "/" + model + "/search/", {q: searchTerm}, function(data) {

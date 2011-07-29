@@ -46,9 +46,10 @@ class GenericKeyWidget(forms.Widget):
     def __init__(self, *args, **kwargs):
         super(GenericKeyWidget, self).__init__(*args, **kwargs)
 
-    def render(self, *args, **kwargs):
-        widget_id = id(self)
-        return render_to_string(self.template, {"widget_id": widget_id, })
+    def render(self, name, value, attrs=None):
+        if value is None: value = ''
+        final_attrs = self.build_attrs(attrs, name=name)
+        return render_to_string(self.template, final_attrs)
 
 class DeletionWidget(forms.CheckboxInput):
     pass
