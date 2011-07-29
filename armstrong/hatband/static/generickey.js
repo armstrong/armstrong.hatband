@@ -24,15 +24,10 @@ armstrong.widgets.generickey = function($, id, options) {
         },
         facetMatches : function(callback) {
           if (facets.data.length > 0) {
-            console.log("returning facets");
-            console.log(facets.data);
             callback(facets.data);
           } else if (!facets.inFlight) {
             facets.inFlight = true;
-            console.log("fetching...");
             $.getJSON(options.facetURL, function(data) {
-              console.log("return from server");
-              console.log(data);
               facets.raw = data;
               for (key in data) {
                 facets.data.push(key);
@@ -40,14 +35,11 @@ armstrong.widgets.generickey = function($, id, options) {
               callback(facets.data);
               facets.inFlight = false;
             });
-          } else {
-            console.log("currently in flight and no data");
           }
         },
         valueMatches : function(facet, searchTerm, callback) {
           var app_label = facets.raw[facet],
               model = facet;
-          console.log(app_label, model);
           // TODO: don't pound the server
           $.getJSON("/admin/" + app_label + "/" + model + "/search/", {q: searchTerm}, function(data) {
             callback(data.results);
