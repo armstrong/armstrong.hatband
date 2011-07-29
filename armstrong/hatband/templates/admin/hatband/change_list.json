@@ -1,9 +1,9 @@
 {
-    "names": [
+    "results": [
         {% for item in cl.result_list %}
         {
-            "text": "{{ item }}",
-            "model_id": {{ item.pk }}
+            "value": "{{ item.pk }}",
+            "label": "{{ item }}"
         }{% if not forloop.last %},{% endif %}
         {% endfor %}
     ]

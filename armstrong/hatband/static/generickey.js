@@ -50,12 +50,7 @@ armstrong.widgets.generickey = function($, id, options) {
           console.log(app_label, model);
           // TODO: don't pound the server
           $.getJSON("/admin/" + app_label + "/" + model + "/search/", {q: searchTerm}, function(data) {
-            var result = [], match;
-            for (idx in data.names) {
-              match = data.names[idx];
-              result.push(match.text);
-            }
-            callback(result);
+            callback(data.results);
           });
         }
       }
