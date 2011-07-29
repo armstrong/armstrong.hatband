@@ -1,3 +1,4 @@
+from contextlib import contextmanager
 from django.conf import settings
 from django.contrib.admin.sites import AdminSite as DjangoAdminSite
 from django.contrib.admin.sites import site as django_site
@@ -24,6 +25,14 @@ EXCLUDED_APPS_FROM_FACETS = getattr(settings,
     "ARMSTRONG_EXCLUDED_APPS_FROM_FACETS", [
         "admin", "auth", "contenttype", "reversion", "sessions", "sites",
     ])
+
+
+# TODO: find a home for this
+@contextmanager
+def preserve_attr(obj, attr):
+    original = getattr(obj, attr)
+    yield
+    setattr(obj, attr, original)
 
 
 class AdminSite(DjangoAdminSite):
@@ -61,11 +70,9 @@ class AdminSite(DjangoAdminSite):
         content_type = ContentType.objects.get(app_label=app_label, model=model_name)
         model  = content_type.model_class()
         model_admin = self._registry[model]
-        original = model_admin.change_list_template
-        model_admin.change_list_template = "admin/hatband/change_list.json"
-        ret = model_admin.changelist_view(request)
-        model_admin.change_list_template = original
-        return ret
+        with preserve_attr(model_admin, "change_list_template"):
+            model_admin.change_list_template = "admin/hatband/change_list.json"
+            return model_admin.changelist_view(request)
 
 
 site = AdminSite()
