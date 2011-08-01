@@ -9,9 +9,10 @@ armstrong.widgets.generickey = function($, id, options) {
       data: [],
       raw: false,
     };
+    options.query = options.query || '';
     VS.init({
       container  : $("#generic_key_" + id),
-      query      : '',
+      query      : options.query,
       unquotable : [
         'text',
         'account',
