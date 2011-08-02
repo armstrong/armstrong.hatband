@@ -42,6 +42,8 @@ class AdminSite(DjangoAdminSite):
         search = [
             url(r"^armstrong/search/generickey/facets/$",
                 self.generic_key_facets, name="generic_key_facets"),
+            url(r"^armstrong/search/type_and_model_to_query/$",
+                self.type_and_model_to_query, name="type_and_model_to_query"),
         ]
         for model, model_admin in self._registry.iteritems():
             search.append(
@@ -65,6 +67,14 @@ class AdminSite(DjangoAdminSite):
         content_types = ContentType.objects.values_list(*values) \
                 .exclude(excluded_apps | excluded_models)
         return dict([(str(a), {"app_label": str(b), "id": str(c)}) for a, b, c in content_types])
+
+    @json_response
+    def type_and_model_to_query(self, request):
+        # TODO: handle error 404 error state
+        # TODO: handle invalid request error state
+        type = ContentType.objects.get(pk=request.GET["content_type_id"])
+        model = type.model_class().objects.get(pk=request.GET["object_id"])
+        return {"query": '%s: "%d: %s"' % (type.model, model.pk, str(model))}
 
     def generic_key_modelsearch(self, request, app_label, model_name):
         # TODO: deal with missing/bad requests

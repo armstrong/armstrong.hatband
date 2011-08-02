@@ -1,12 +1,31 @@
 <div style="width:720px;">
     <div id="generic_key_{{ id }}" style=""></div>
-    <input type="hidden" id="{{ id }}" name="{{ name }}" />
+    <input type="hidden" id="{{ id }}" name="{{ name }}" value="{{ value }}" />
 </div>
 
 <script type="text/javascript">
-    armstrong.widgets.generickey(django.jQuery, "{{ id }}",
+(function($) {
+  var initializeGenericKey = function(query) {
+    armstrong.widgets.generickey($, "{{ id }}",
       {
-        facetURL: "{% url admin:generic_key_facets %}"
+        facetURL: "{% url admin:generic_key_facets %}",
+        query: query
       }
     );
+  };
+
+  var el = $('#generic_key_{{ id }}'),
+      row = el.parents("tr"),
+      params = {
+        object_id: row.find('.object_id input[type="hidden"]').val(),
+        content_type_id: row.find(".content_type input").val()
+      };
+  if (params.content_type_id) {
+    $.getJSON("{% url admin:type_and_model_to_query %}", params, function(data) {
+      initializeGenericKey(data.query);
+      });
+  } else {
+    initializeGenericKey("");
+  }
+})(django.jQuery)
 </script>

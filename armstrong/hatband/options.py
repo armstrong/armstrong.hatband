@@ -50,6 +50,7 @@ class GenericKeyWidget(forms.Widget):
         if value is None:
             value = ''
         final_attrs = self.build_attrs(attrs, name=name)
+        final_attrs["value"] = value
         return render_to_string(self.template, final_attrs)
 
 class DeletionWidget(forms.CheckboxInput):
