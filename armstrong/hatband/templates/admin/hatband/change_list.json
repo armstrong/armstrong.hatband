@@ -1,7 +1,7 @@
 {
     "results": [
         {% for item in cl.result_list %}
-        "{{ item.pk }}: {{ item }}"{% if not forloop.last %},{% endif %}
+        "{{ item.pk }}: {{ item|escapejs }}"{% if not forloop.last %},{% endif %}
         {% endfor %}
     ]
 }
