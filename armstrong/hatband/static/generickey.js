@@ -24,6 +24,10 @@ armstrong.widgets.generickey = function($, options) {
         query      : options.query,
         unquotable : [],
         callbacks  : {
+          clearSearch: function(callback) {
+            row.find('.delete input[type="checkbox"]').attr({"checked": "checked"});
+            callback();
+          },
           search : function(query) {
             if (query.length <= 0) {
               return;
