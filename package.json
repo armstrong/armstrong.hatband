@@ -1,6 +1,6 @@
 {
     "name": "armstrong.hatband",
-    "version": "0.3.0",
+    "version": "0.3.1",
     "description": "The administrative interface for Armstrong",
     "install_requires": [
         "armstrong.utils.backends>=0.2"
