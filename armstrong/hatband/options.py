@@ -49,9 +49,6 @@ class GenericKeyWidget(forms.Widget):
         final_attrs["is_templated"] = final_attrs["id"].find("__prefix__") > -1
         return render_to_string(self.template, final_attrs)
 
-class DeletionWidget(forms.CheckboxInput):
-    pass
-
 
 class OrderableGenericKeyLookupForm(forms.ModelForm):
     class Meta:
