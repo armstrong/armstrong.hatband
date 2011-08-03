@@ -4,7 +4,12 @@ armstrong.widgets = armstrong.widgets || {};
 
 armstrong.widgets.generickey = function($, options) {
   var id = options.id,
-      container = $("#generic_key_" + id);
+      container = $("#generic_key_" + id),
+      row = container.parents("tr"),
+      params = {
+        object_id: row.find('.object_id input[type="hidden"]').val(),
+        content_type_id: row.find(".content_type input").val()
+      };
 
   var initVisualSearch  = function() {
     $(document).ready(function() {
@@ -58,11 +63,6 @@ armstrong.widgets.generickey = function($, options) {
     });
   };
 
-  var row = container.parents("tr"),
-      params = {
-        object_id: row.find('.object_id input[type="hidden"]').val(),
-        content_type_id: row.find(".content_type input").val()
-      };
   if (params.content_type_id) {
     $.getJSON(options.queryLookupURL, params, function(data) {
       options.query = data.query
