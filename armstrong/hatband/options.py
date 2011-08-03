@@ -1,4 +1,3 @@
-from django.conf import settings
 from django.contrib import admin
 from django.contrib.admin.options import InlineModelAdmin
 from django.db import models
@@ -6,6 +5,7 @@ from django import forms
 from django.template.loader import render_to_string
 from django.utils.safestring import mark_safe
 from . import widgets
+from .utils import static_url
 
 RICH_TEXT_DBFIELD_OVERRIDES = {
     models.TextField: {'widget': widgets.RichTextWidget},
@@ -22,11 +22,6 @@ class StackedInline(admin.StackedInline):
 
 class TabularInline(admin.TabularInline):
     formfield_overrides = RICH_TEXT_DBFIELD_OVERRIDES
-
-
-# TODO: move this over to somewhere more appropriate
-def static_url(url):
-    return ''.join((settings.STATIC_URL, url))
 
 
 class GenericKeyWidget(forms.Widget):
