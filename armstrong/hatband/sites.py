@@ -39,7 +39,6 @@ class AdminSite(DjangoAdminSite):
                         model._meta.app_label, model._meta.module_name)))
 
         urlpatterns = patterns('', *search)
-        print urlpatterns
         return urlpatterns + super(AdminSite, self).get_urls()
 
     @json_response
