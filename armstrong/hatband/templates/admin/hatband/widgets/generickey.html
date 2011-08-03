@@ -3,29 +3,14 @@
     <input type="hidden" id="{{ id }}" name="{{ name }}" value="{{ value }}" />
 </div>
 
+{% if not is_templated %}
 <script type="text/javascript">
 (function($) {
-  var initializeGenericKey = function(query) {
-    armstrong.widgets.generickey($, "{{ id }}",
-      {
-        facetURL: "{% url admin:generic_key_facets %}",
-        query: query
-      }
-    );
-  };
-
-  var el = $('#generic_key_{{ id }}'),
-      row = el.parents("tr"),
-      params = {
-        object_id: row.find('.object_id input[type="hidden"]').val(),
-        content_type_id: row.find(".content_type input").val()
-      };
-  if (params.content_type_id) {
-    $.getJSON("{% url admin:type_and_model_to_query %}", params, function(data) {
-      initializeGenericKey(data.query);
-      });
-  } else {
-    initializeGenericKey("");
-  }
+  armstrong.widgets.generickey($, {
+    facetURL: "{% url admin:generic_key_facets %}",
+    queryLookupURL: "{% url admin:type_and_model_to_query %}",
+    id: "{{ id }}"
+  });
 })(django.jQuery)
 </script>
+{% endif %}

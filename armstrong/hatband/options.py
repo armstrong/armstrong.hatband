@@ -51,6 +51,7 @@ class GenericKeyWidget(forms.Widget):
             value = ''
         final_attrs = self.build_attrs(attrs, name=name)
         final_attrs["value"] = value
+        final_attrs["is_templated"] = final_attrs["id"].find("__prefix__") > -1
         return render_to_string(self.template, final_attrs)
 
 class DeletionWidget(forms.CheckboxInput):
