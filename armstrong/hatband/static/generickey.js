@@ -4,6 +4,9 @@ armstrong.widgets = armstrong.widgets || {};
 
 armstrong.widgets.generickey = function($, options) {
   var id = options.id,
+      object_id_input = $("#" + id),
+      pk_input = $("#" + id.replace("object_id", "id")),
+      content_type_input = $("#" + id.replace("object_id", "content_type")),
       container = $("#generic_key_" + id),
       row = container.parents("tr"),
       params = {
@@ -25,7 +28,9 @@ armstrong.widgets.generickey = function($, options) {
         unquotable : [],
         callbacks  : {
           clearSearch: function(callback) {
-            row.find('.delete input[type="checkbox"]').attr({"checked": "checked"});
+            content_type_input.removeAttr("value");
+            object_id_input.removeAttr("value");
+            row.find('.delete input').attr({"checked": "checked"});
             callback();
           },
           search : function(query) {
@@ -36,8 +41,8 @@ armstrong.widgets.generickey = function($, options) {
                 model = result[0],
                 content_type_id = facets.raw[model].id,
                 model_id = result[1].slice(2); // ditch the ' "'
-            $("#" + id).val(model_id);
-            $("#" + id.replace("object_id", "content_type")).val(content_type_id);
+            object_id_input.val(model_id);
+            content_type_input.val(content_type_id);
           },
           facetMatches : function(callback) {
             if (facets.data.length > 0) {
