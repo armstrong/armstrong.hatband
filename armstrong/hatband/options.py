@@ -1,6 +1,5 @@
 from django.contrib import admin
 from django.contrib.admin.options import InlineModelAdmin
-from django.db import models
 from django.utils.safestring import mark_safe
 
 from . import forms

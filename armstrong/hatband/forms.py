@@ -1,4 +1,5 @@
 from django import forms
+from django.db import models
 
 from . import widgets
 
