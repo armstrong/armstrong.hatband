@@ -14,7 +14,9 @@ class GenericKeyWidget(Widget):
              )
 
         css = {
-            "all": (static_url("visualsearch/visualsearch.css"), ),
+            "all": (static_url("visualsearch/visualsearch.css"),
+                    static_url("hatband/css/generickey.css"),
+                   )
         }
 
 
