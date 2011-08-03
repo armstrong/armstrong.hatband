@@ -1,0 +1,16 @@
+<div style="width:720px;">
+    <div id="generic_key_{{ id }}" style=""></div>
+    <input type="hidden" id="{{ id }}" name="{{ name }}" value="{{ value }}" />
+</div>
+
+{% if not is_templated %}
+<script type="text/javascript">
+(function($) {
+  armstrong.widgets.generickey($, {
+    facetURL: "{% url admin:generic_key_facets %}",
+    queryLookupURL: "{% url admin:type_and_model_to_query %}",
+    id: "{{ id }}"
+  });
+})(django.jQuery)
+</script>
+{% endif %}

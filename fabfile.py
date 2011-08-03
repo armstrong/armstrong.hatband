@@ -1,4 +1,5 @@
 from armstrong.dev.tasks import *
+from fabric.api import local, task
 
 settings = {
     'DEBUG': True,
@@ -19,3 +20,7 @@ tested_apps = ("hatband_support", "hatband", )
 full_name = "armstrong.hatband"
 pip_install_first = True
 
+
+@task
+def update_visualsearch():
+    local("cp -R ./vendor/visualsearch/build-min/* ./armstrong/hatband/static/visualsearch/")

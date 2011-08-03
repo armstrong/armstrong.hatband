@@ -1,19 +1,23 @@
 from django.contrib import admin
-from django.db import models
-from . import widgets
+from django.contrib.admin.options import InlineModelAdmin
+from django.utils.safestring import mark_safe
 
-RICH_TEXT_DBFIELD_OVERRIDES = {
-    models.TextField: {'widget': widgets.RichTextWidget},
-}
+from . import forms
 
 
 class ModelAdmin(admin.ModelAdmin):
-    formfield_overrides = RICH_TEXT_DBFIELD_OVERRIDES
+    formfield_overrides = forms.RICH_TEXT_DBFIELD_OVERRIDES
 
 
 class StackedInline(admin.StackedInline):
-    formfield_overrides = RICH_TEXT_DBFIELD_OVERRIDES
+    formfield_overrides = forms.RICH_TEXT_DBFIELD_OVERRIDES
 
 
 class TabularInline(admin.TabularInline):
-    formfield_overrides = RICH_TEXT_DBFIELD_OVERRIDES
+    formfield_overrides = forms.RICH_TEXT_DBFIELD_OVERRIDES
+
+
+class GenericKeyInline(InlineModelAdmin):
+    form = forms.OrderableGenericKeyLookupForm
+    formfield_overrides = forms.RICH_TEXT_DBFIELD_OVERRIDES
+    template = "admin/edit_inline/generickey.html"

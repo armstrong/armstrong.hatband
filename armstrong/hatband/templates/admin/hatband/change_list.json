@@ -1,0 +1,7 @@
+{
+    "results": [
+        {% for item in cl.result_list %}
+        "{{ item.pk }}: {{ item|escapejs }}"{% if not forloop.last %},{% endif %}
+        {% endfor %}
+    ]
+}
