@@ -5,15 +5,9 @@ from django.contrib.admin.sites import site as django_site
 from django.contrib.admin.views.main import ChangeList as DjangoChangeList
 from django.contrib.contenttypes.models import ContentType
 from django.db.models import Q
-from django.http import HttpResponse
-import json
 
+from .decorators import json_response
 
-def json_response(func):
-    def inner(*args, **kwargs):
-        data = func(*args, **kwargs)
-        return HttpResponse(json.dumps(data))
-    return inner
 
 EXCLUDED_MODELS_FROM_FACETS = getattr(settings,
     "ARMSTRONG_EXCLUDED_MODELS_FROM_FACETS", [
