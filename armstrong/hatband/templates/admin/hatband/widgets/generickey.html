@@ -9,8 +9,8 @@
   armstrong.widgets.generickey($, {
     content_type_name: "{{ content_type_name }}",
     object_id_name: "{{ object_id_name }}",
-    facetURL: "{% url admin:generic_key_facets %}",
-    queryLookupURL: "{% url admin:type_and_model_to_query %}",
+    facetURL: "{{ facet_url }}",
+    queryLookupURL: "{{ query_lookup_url }}",
     id: "{{ id }}"
   });
 })(django.jQuery)
