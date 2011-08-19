@@ -30,8 +30,10 @@ class GenericKeyWidget(Widget):
         if value is None:
             value = ''
         final_attrs = self.build_attrs(attrs, name=name)
-        final_attrs["value"] = value
-        final_attrs["is_templated"] = final_attrs["id"].find("__prefix__") > -1
-        final_attrs["object_id_name"] = self.object_id_name
-        final_attrs["content_type_name"] = self.content_type_name
+        final_attrs.update({
+            "value": value,
+            "is_templated": final_attrs["id"].find("__prefix__") > -1,
+            "object_id_name": self.object_id_name,
+            "content_type_name": self.content_type_name,
+        })
         return render_to_string(self.template, final_attrs)
