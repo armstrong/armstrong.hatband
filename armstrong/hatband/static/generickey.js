@@ -4,14 +4,16 @@ armstrong.widgets = armstrong.widgets || {};
 
 armstrong.widgets.generickey = function($, options) {
   var id = options.id,
+      object_id_name = options.object_id_name || "object_id",
+      content_type_name = options.content_type_name || "content_type",
       object_id_input = $("#" + id),
-      pk_input = $("#" + id.replace("object_id", "id")),
-      content_type_input = $("#" + id.replace("object_id", "content_type")),
+      pk_input = $("#" + id.replace(object_id_name, "id")),
+      content_type_input = $("#" + id.replace(object_id_name, content_type_name)),
       container = $("#generic_key_" + id),
       row = container.parents("tr"),
       params = {
-        object_id: row.find('.object_id input[type="hidden"]').val(),
-        content_type_id: row.find(".content_type input").val()
+        object_id: row.find("." + object_id_name + ' input[type="hidden"]').val(),
+        content_type_id: row.find("." + content_type_name + " input").val()
       };
 
   var initVisualSearch  = function() {
