@@ -3,6 +3,7 @@
     "version": "0.5.0.alpha.0",
     "description": "The administrative interface for Armstrong",
     "install_requires": [
-        "armstrong.utils.backends>=0.2"
+        "django==1.3.1",
+        "armstrong.utils.backends>=1.0.0,<1.1"
     ]
 }
