@@ -21,3 +21,11 @@ class GenericKeyInline(InlineModelAdmin):
     form = forms.OrderableGenericKeyLookupForm
     formfield_overrides = forms.RICH_TEXT_DBFIELD_OVERRIDES
     template = "admin/edit_inline/generickey.html"
+
+
+class BackboneInline(InlineModelAdmin):
+    form = forms.OrderableGenericKeyLookupForm
+    formfield_overrides = forms.RICH_TEXT_DBFIELD_OVERRIDES
+    template = "admin/edit_inline/backbone.html"
+    extra = 0
+

@@ -1,0 +1,55 @@
+{% load i18n adminmedia admin_modify %}
+{% with inline_admin_formset.formset.prefix as prefix %}
+<div class="inline-group generickeywidget" id="{{ prefix }}-group">
+  <div class="tabular inline-related {% if forloop.last %}last-related{% endif %}">
+  <fieldset class="module">
+    <h2>{{ inline_admin_formset.opts.verbose_name_plural|capfirst }}</h2>
+    {{ inline_admin_formset.formset.management_form }}
+    {{ inline_admin_formset.formset.non_form_errors }}
+    <div id="{{ prefix }}-empty_form">
+        <table>
+            {{ inline_admin_formset.formset.empty_form }}
+        </table>
+    </div>
+    <div id='{{ prefix }}-collection'>
+    {% for inline_admin_form in inline_admin_formset.formset.initial_forms %}
+    <div id='{{ prefix }}-{{ forloop.counter }}'>
+        <span class='form_to_text_target'></span>
+        {% if inline_admin_form.has_auto_field %}{{ inline_admin_form.pk_field.field }}{% endif %}
+        {{ inline_admin_form.fk_field.field }}
+        {% spaceless %}
+        {% for field in inline_admin_form %}
+            {{ field.as_hidden }}
+        {% endfor %}
+        {% endspaceless %}
+        <span class="delete">{% if inline_admin_form.original %}
+        {{ inline_admin_form.deletion_field.label_tag }}
+        {{ inline_admin_form.deletion_field.field }}{% endif %}</span>
+      </div>
+    {% endfor %}
+    </div>
+  </fieldset>
+  </div>
+</div>
+<script>
+(function($) {
+    $(document).ready(function($) {
+        armstrong.widgets.generickey($, {
+          facetURL: "{% url admin:generic_key_facets %}",
+          queryLookupURL: "{% url admin:type_and_model_to_query %}",
+          id: "id_{{ prefix }}-__prefix__-object_id"
+        });
+    });
+})(django.jQuery);
+</script>
+
+{% block templates %}
+<script type="text/template" id="{{ prefix }}-list-item-template">
+    <li class="item">
+        <span class="content"><%= obj.content_id %></span>
+        <button class="delete">Delete</button
+    </li>
+</script>
+{% endblock %}
+
+{% endwith %}
