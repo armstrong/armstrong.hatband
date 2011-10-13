@@ -10,8 +10,11 @@ RICH_TEXT_DBFIELD_OVERRIDES = {
 
 class BackboneFormMixin(object):
     class Media:
-        js = ('hatband/js/underscore.js', 'hatband/js/backbone.js',
-        'hatband/js/backbone-inline-base.js')
+        js = (
+                'hatband/js/jquery-1.6.2.min.js',
+                'hatband/js/underscore.js',
+                'hatband/js/backbone.js',
+                'hatband/js/backbone-inline-base.js')
 
 
 class OrderableGenericKeyLookupForm(BackboneFormMixin, forms.ModelForm):

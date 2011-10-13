@@ -12,9 +12,10 @@
         </table>
     </div>
     <div id='{{ prefix }}-collection'>
+    </div>
+    <div id='{{ prefix }}-forms'>
     {% for inline_admin_form in inline_admin_formset.formset.initial_forms %}
-    <div id='{{ prefix }}-{{ forloop.counter }}'>
-        <span class='form_to_text_target'></span>
+    <div id='{{ inline_admin_form.prefix }}' class='{{ prefix }}-object'>
         {% if inline_admin_form.has_auto_field %}{{ inline_admin_form.pk_field.field }}{% endif %}
         {{ inline_admin_form.fk_field.field }}
         {% spaceless %}
