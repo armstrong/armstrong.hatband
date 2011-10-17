@@ -7,9 +7,11 @@
     {{ inline_admin_formset.formset.management_form }}
     {{ inline_admin_formset.formset.non_form_errors }}
     <div id="{{ prefix }}-empty_form">
+        {% block emptyForm %}
         <table>
             {{ inline_admin_formset.formset.empty_form }}
         </table>
+        {% endblock %}
     </div>
     <div id='{{ prefix }}-collection'>
     </div>
