@@ -5,5 +5,6 @@
     "install_requires": [
         "django==1.3.1",
         "armstrong.utils.backends>=1.0.0,<1.1"
+        "armstrong.core.arm_layout>=1.0.0,<1.1"
     ]
 }
