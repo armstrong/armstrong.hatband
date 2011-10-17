@@ -83,7 +83,7 @@ class AdminSite(DjangoAdminSite):
         type = ContentType.objects.get(pk=request.GET["content_type_id"])
         model = type.model_class().objects.get(pk=request.GET["object_id"])
         template = request.GET.get("template", "preview")
-        return HttpResponse(render_model(model, "big"))
+        return HttpResponse(render_model(model, template))
 
 
 site = AdminSite()
