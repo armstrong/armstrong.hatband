@@ -11,6 +11,17 @@
         <table>
             {{ inline_admin_formset.formset.empty_form }}
         </table>
+        <script>
+        (function($) {
+            $(document).ready(function($) {
+                armstrong.widgets.generickey($, {
+                  facetURL: "{% url admin:generic_key_facets %}",
+                  queryLookupURL: "{% url admin:type_and_model_to_query %}",
+                  id: "id_{{ prefix }}-__prefix__-object_id"
+                });
+            });
+        })(django.jQuery);
+        </script>
         {% endblock %}
     </div>
     <div id='{{ prefix }}-collection'>
@@ -34,17 +45,6 @@
   </fieldset>
   </div>
 </div>
-<script>
-(function($) {
-    $(document).ready(function($) {
-        armstrong.widgets.generickey($, {
-          facetURL: "{% url admin:generic_key_facets %}",
-          queryLookupURL: "{% url admin:type_and_model_to_query %}",
-          id: "id_{{ prefix }}-__prefix__-object_id"
-        });
-    });
-})(django.jQuery);
-</script>
 
 {% block templates %}
 <script type="text/template" id="{{ prefix }}-list-item-template">
