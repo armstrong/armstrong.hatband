@@ -143,7 +143,7 @@ ListView = Backbone.View.extend({
 
         var obj = new this.model_class({prefix: this.options.namespace+"-"+formId+"-"});
         this.collection.add(obj);
-    }
+    },
     setupInput: function(formDiv, el) {
             $(el).attr("type", "hidden");
             formDiv.append(el);
