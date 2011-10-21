@@ -115,9 +115,7 @@ ListView = Backbone.View.extend({
             collection: this.collection
         });
 
-        for(i=0; i<this.collection.length; i++){
-            this.displayObject(this.collection.at(i));
-        }
+        this.collection.each(_.bind(this.displayObject, this));
 
         this.options.emptyForm.bind('createObject', this.addObjectFromForm, this);
         this.collection.bind('add', this.displayObject, this);
