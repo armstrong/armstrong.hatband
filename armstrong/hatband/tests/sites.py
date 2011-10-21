@@ -10,6 +10,7 @@ PASSWORD = "password"
 __all__ = [
     "GenericKeyFacetsViewTestCase",
     "TypeAndModelToQueryViewTestCase",
+    "RenderModelPreviewTestCase",
 ]
 
 class HatbandViewTestCase(TestCase):
@@ -76,3 +77,7 @@ class TypeAndModelToQueryViewTestCase(HatbandViewTestCase):
         return self.client.get(self.url, {
                 "content_type_id": content_type.pk,
                 "object_id": obj.pk})
+
+
+class RenderModelPreviewTestCase(HatbandViewTestCase):
+    view_name = "admin:render_model_preview"
