@@ -30,26 +30,31 @@ class AdminSite(DjangoAdminSite):
 
         search = [
             url(r"^armstrong/search/generickey/facets/$",
-                self.admin_view(self.generic_key_facets),
-                        name="generic_key_facets"),
+                    self.admin_view(self.generic_key_facets),
+                    name="generic_key_facets",
+                ),
             url(r"^armstrong/search/type_and_model_to_query/$",
-                self.admin_view(self.type_and_model_to_query),
-                        name="type_and_model_to_query"),
+                    self.admin_view(self.type_and_model_to_query),
+                    name="type_and_model_to_query",
+                ),
         ]
         for model, model_admin in self._registry.iteritems():
             search.append(
                     url(r"^(?P<app_label>%s)/(?P<model_name>%s)/search/" % (
-                        model._meta.app_label, model._meta.module_name),
+                            model._meta.app_label, model._meta.module_name),
                     self.admin_view(self.generic_key_modelsearch),
-                        name="%s_%s_search" % (
+                    name="%s_%s_search" % (
                             model._meta.app_label,
-                            model._meta.module_name)))
+                            model._meta.module_name))
+                )
 
         urlpatterns = patterns('', *search)
 
         urlpatterns = urlpatterns + patterns('',
                 url(r"^armstrong/render_model_preview/$",
-                    self.render_model_preview, name="render_model_preview"),
+                        self.admin_view(self.render_model_preview),
+                        name="render_model_preview"
+                    ),
             )
 
         return urlpatterns + super(AdminSite, self).get_urls()
