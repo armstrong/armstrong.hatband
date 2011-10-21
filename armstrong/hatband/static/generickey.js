@@ -11,20 +11,20 @@ armstrong.widgets.generickey = function($, options) {
       content_type_input = $("#" + id.replace(object_id_name, content_type_name)),
       container = $("#generic_key_" + id),
       row = container.parents("tr"),
+      searchDone = options.searchDone || $.noop,
       params = {
         object_id: row.find("." + object_id_name + ' input[type="hidden"]').val(),
         content_type_id: row.find("." + content_type_name + " input").val()
       };
 
   var initVisualSearch  = function() {
-    $(document).ready(function() {
       var facets = {
         inFlight: false,
         data: [],
         raw: false,
       };
       options.query = options.query || '';
-      VS.init({
+      var app = VS.init({
         container  : container,
         query      : options.query,
         unquotable : [],
@@ -45,6 +45,7 @@ armstrong.widgets.generickey = function($, options) {
                 model_id = result[1].slice(2); // ditch the ' "'
             object_id_input.val(model_id);
             content_type_input.val(content_type_id);
+            searchDone(app);
           },
           facetMatches : function(callback) {
             if (facets.data.length > 0) {
@@ -62,24 +63,26 @@ armstrong.widgets.generickey = function($, options) {
             }
           },
           valueMatches : function(facet, searchTerm, callback) {
-            var app_label = facets.raw[facet].app_label,
-                model = facet;
-            // TODO: don't pound the server
-            $.getJSON("/admin/" + app_label + "/" + model + "/search/", {q: searchTerm}, function(data) {
-              callback(data.results);
-            });
+            clearTimeout(this.requestTimeout);
+            this.requestTimeout = setTimeout(function(){
+                var app_label = facets.raw[facet].app_label,
+                    model = facet;
+                $.getJSON("/admin/" + app_label + "/" + model + "/search/", {q: searchTerm}, function(data) {
+                  callback(data.results);
+                });
+            }, 250);
           }
         }
       });
-    });
+      return app;
   };
 
   if (params.content_type_id) {
     $.getJSON(options.queryLookupURL, params, function(data) {
       options.query = data.query
-      initVisualSearch();
+      return initVisualSearch();
       });
   } else {
-    initVisualSearch();
+    return initVisualSearch();
   }
 };

@@ -1,0 +1,67 @@
+{% load i18n adminmedia admin_modify %}
+{% with inline_admin_formset.formset.prefix as namespace %}
+<div class="inline-group generickeywidget" id="{{ namespace }}-group">
+  <div class="tabular inline-related {% if forloop.last %}last-related{% endif %}">
+  <fieldset class="module">
+    <h2>{{ inline_admin_formset.opts.verbose_name_plural|capfirst }}</h2>
+    {{ inline_admin_formset.formset.management_form }}
+    {{ inline_admin_formset.formset.non_form_errors }}
+    <div id="{{ namespace }}-empty-form">
+        {% block emptyForm %}
+        <table>
+            {{ inline_admin_formset.formset.empty_form }}
+        </table>
+        <button id="{{ namespace }}-empty-form-submit">Add</button>
+        {% endblock %}
+    </div>
+    <div id='{{ namespace }}-collection'>
+    </div>
+    <div id='{{ namespace }}-forms'>
+    {% for inline_admin_form in inline_admin_formset.formset.initial_forms %}
+    <div id='{{ inline_admin_form.prefix }}' class='{{ namespace }}-object'>
+        {% if inline_admin_form.has_auto_field %}{{ inline_admin_form.pk_field.field }}{% endif %}
+        {{ inline_admin_form.fk_field.field }}
+        {% spaceless %}
+        {% for field in inline_admin_form %}
+            {{ field.as_hidden }}
+        {% endfor %}
+        {% endspaceless %}
+        <span class="delete">{% if inline_admin_form.original %}
+        {{ inline_admin_form.deletion_field.label_tag }}
+        {{ inline_admin_form.deletion_field.field }}{% endif %}</span>
+      </div>
+    {% endfor %}
+    </div>
+  </fieldset>
+  </div>
+</div>
+
+{% block templates %}
+<script type="text/template" id="{{ namespace }}-list-item-template">
+    <li class="item">
+        <span class="content"><%= title %></span>
+        <button class="delete_button">Delete</button>
+    </li>
+</script>
+{% endblock %}
+
+{% block scriptInit %}
+<script>
+    $(document).ready(function() {
+        {{ namespace }}EmptyForm = new EmptyForm({
+            el: $('#{{ namespace }}-empty-form')
+        })
+        {{ namespace }}App = new ItemListView({
+            namespace: '{{ namespace }}',
+            el: '#{{ namespace }}-collection',
+            emptyForm: {{ namespace }}EmptyForm,
+            preview_url: '{% url admin:render_model_preview %}'
+        });
+        $('#{{ namespace }}-empty-form-submit').click(function() {
+            {{ namespace }}EmptyForm.trigger('createObject');
+        });
+    });
+</script>
+{% endblock %}
+
+{% endwith %}

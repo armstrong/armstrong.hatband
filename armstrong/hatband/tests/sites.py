@@ -4,12 +4,14 @@ from django.core.urlresolvers import reverse
 from django.test.client import Client
 
 from ._utils import HatbandTestCase as TestCase
+from .hatband_support.models import *
 
 PASSWORD = "password"
 
 __all__ = [
     "GenericKeyFacetsViewTestCase",
     "TypeAndModelToQueryViewTestCase",
+    "RenderModelPreviewTestCase",
 ]
 
 class HatbandViewTestCase(TestCase):
@@ -76,3 +78,20 @@ class TypeAndModelToQueryViewTestCase(HatbandViewTestCase):
         return self.client.get(self.url, {
                 "content_type_id": content_type.pk,
                 "object_id": obj.pk})
+
+
+class RenderModelPreviewTestCase(HatbandViewTestCase):
+    view_name = "admin:render_model_preview"
+    def get_response(self):
+        cat = TestCategory.objects.create(name="cat")
+        TestArticle.objects.create(text="Hooray", category=cat)
+        content_type = ContentType.objects.get_for_model(TestArticle)
+        obj = content_type.model_class().objects.all()[0]
+        return self.client.get(self.url, {
+                "content_type": content_type.pk,
+                "object_id": obj.pk})
+
+    def test_template_rendered(self):
+        self.client.login(username=self.staff.username, password=PASSWORD)
+        response = self.get_response()
+        self.assertEqual(response.content, 'It worked! Hooray\n')

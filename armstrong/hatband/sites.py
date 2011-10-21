@@ -4,9 +4,12 @@ from django.contrib.admin.sites import site as django_site
 from django.contrib.admin.views.main import ChangeList as DjangoChangeList
 from django.contrib.contenttypes.models import ContentType
 from django.db.models import Q
+from django.http import HttpResponse
 
 from .contextmanagers import preserve_attr
 from .decorators import json_response
+
+from armstrong.core.arm_layout.utils import render_model
 
 
 EXCLUDED_MODELS_FROM_FACETS = getattr(settings,
@@ -27,22 +30,33 @@ class AdminSite(DjangoAdminSite):
 
         search = [
             url(r"^armstrong/search/generickey/facets/$",
-                self.admin_view(self.generic_key_facets),
-                        name="generic_key_facets"),
+                    self.admin_view(self.generic_key_facets),
+                    name="generic_key_facets",
+                ),
             url(r"^armstrong/search/type_and_model_to_query/$",
-                self.admin_view(self.type_and_model_to_query),
-                        name="type_and_model_to_query"),
+                    self.admin_view(self.type_and_model_to_query),
+                    name="type_and_model_to_query",
+                ),
         ]
         for model, model_admin in self._registry.iteritems():
             search.append(
                     url(r"^(?P<app_label>%s)/(?P<model_name>%s)/search/" % (
-                        model._meta.app_label, model._meta.module_name),
+                            model._meta.app_label, model._meta.module_name),
                     self.admin_view(self.generic_key_modelsearch),
-                        name="%s_%s_search" % (
+                    name="%s_%s_search" % (
                             model._meta.app_label,
-                            model._meta.module_name)))
+                            model._meta.module_name))
+                )
 
         urlpatterns = patterns('', *search)
+
+        urlpatterns = urlpatterns + patterns('',
+                url(r"^armstrong/render_model_preview/$",
+                        self.admin_view(self.render_model_preview),
+                        name="render_model_preview"
+                    ),
+            )
+
         return urlpatterns + super(AdminSite, self).get_urls()
 
     @json_response
@@ -74,6 +88,12 @@ class AdminSite(DjangoAdminSite):
         with preserve_attr(model_admin, "change_list_template"):
             model_admin.change_list_template = "admin/hatband/change_list.json"
             return model_admin.changelist_view(request)
+
+    def render_model_preview(self, request):
+        type = ContentType.objects.get(pk=request.GET["content_type"])
+        model = type.model_class().objects.get(pk=request.GET["object_id"])
+        template = request.GET.get("template", "preview")
+        return HttpResponse(render_model(model, template))
 
 
 site = AdminSite()
