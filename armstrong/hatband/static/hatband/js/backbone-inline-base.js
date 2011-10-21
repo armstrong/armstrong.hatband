@@ -61,7 +61,7 @@ EmptyForm = Backbone.View.extend({
             var newEl = el.clone();
             newEl.attr('id', el.attr('id').replace('__prefix__', formId));
             newEl.attr('name', el.attr('name').replace('__prefix__', formId));
-            return newEl;
+            return newEl.get();
         });
     }
 })
@@ -138,12 +138,15 @@ ListView = Backbone.View.extend({
         $("#" + this.options.namespace + "-forms").append(formDiv);
 
         // clone the empty form, change all its values to hidden and append them
-        this.options.emptyForm.cloneForm(formId).each(function(idx, el) {
-            $(el).attr("type", "hidden");
-            formDiv.append(el);
-        });
+        var els = this.options.emptyForm.cloneForm(formId);
+        _.map(els, _.bind(this.setupInput, this, formDiv));
+
         var obj = new this.model_class({prefix: this.options.namespace+"-"+formId+"-"});
         this.collection.add(obj);
+    }
+    setupInput: function(formDiv, el) {
+            $(el).attr("type", "hidden");
+            formDiv.append(el);
     }
 });
 
