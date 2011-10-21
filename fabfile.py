@@ -13,6 +13,7 @@ settings = {
         'lettuce.django',
     ),
     'STATIC_URL': '/TESTING/',
+    'ROOT_URLCONF': 'armstrong.hatband.tests.hatband_support.urls',
 }
 
 main_app = "hatband"

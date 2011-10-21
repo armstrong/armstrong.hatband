@@ -30,16 +30,20 @@ class AdminSite(DjangoAdminSite):
 
         search = [
             url(r"^armstrong/search/generickey/facets/$",
-                self.generic_key_facets, name="generic_key_facets"),
+                self.admin_view(self.generic_key_facets),
+                        name="generic_key_facets"),
             url(r"^armstrong/search/type_and_model_to_query/$",
-                self.type_and_model_to_query, name="type_and_model_to_query"),
+                self.admin_view(self.type_and_model_to_query),
+                        name="type_and_model_to_query"),
         ]
         for model, model_admin in self._registry.iteritems():
             search.append(
                     url(r"^(?P<app_label>%s)/(?P<model_name>%s)/search/" % (
                         model._meta.app_label, model._meta.module_name),
-                    self.generic_key_modelsearch, name="%s_%s_search" % (
-                        model._meta.app_label, model._meta.module_name)))
+                    self.admin_view(self.generic_key_modelsearch),
+                        name="%s_%s_search" % (
+                            model._meta.app_label,
+                            model._meta.module_name)))
 
         urlpatterns = patterns('', *search)
 
@@ -72,6 +76,7 @@ class AdminSite(DjangoAdminSite):
 
     def generic_key_modelsearch(self, request, app_label, model_name):
         # TODO: deal with missing/bad requests
+        # TODO: add test coverage for this
         content_type = ContentType.objects.get(app_label=app_label, model=model_name)
         model  = content_type.model_class()
         model_admin = self._registry[model]
