@@ -80,7 +80,7 @@ class AdminSite(DjangoAdminSite):
             return model_admin.changelist_view(request)
 
     def render_model_preview(self, request):
-        type = ContentType.objects.get(pk=request.GET["content_type_id"])
+        type = ContentType.objects.get(pk=request.GET["content_type"])
         model = type.model_class().objects.get(pk=request.GET["object_id"])
         template = request.GET.get("template", "preview")
         return HttpResponse(render_model(model, template))
