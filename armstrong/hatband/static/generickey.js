@@ -2,10 +2,6 @@ var jQuery = jQuery || django.jQuery;
 var armstrong = armstrong || {};
 armstrong.widgets = armstrong.widgets || {};
 
-function isNumber(n) {
-  return !isNaN(parseFloat(n)) && isFinite(n);
-}
-
 armstrong.widgets.generickey = function($, options) {
   var id = options.id,
       object_id_name = options.object_id_name || "object_id",
@@ -40,6 +36,9 @@ armstrong.widgets.generickey = function($, options) {
             callback();
           },
           search : function(query) {
+            var isNumber = function(n) {
+              return !isNaN(parseFloat(n)) && isFinite(n);
+            }
             if (query.length <= 0) {
               return;
             }
