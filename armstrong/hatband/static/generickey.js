@@ -2,6 +2,10 @@ var jQuery = jQuery || django.jQuery;
 var armstrong = armstrong || {};
 armstrong.widgets = armstrong.widgets || {};
 
+function isNumber(n) {
+  return !isNaN(parseFloat(n)) && isFinite(n);
+}
+
 armstrong.widgets.generickey = function($, options) {
   var id = options.id,
       object_id_name = options.object_id_name || "object_id",
@@ -43,6 +47,9 @@ armstrong.widgets.generickey = function($, options) {
                 model = result[0],
                 content_type_id = facets.raw[model].id,
                 model_id = result[1].slice(2); // ditch the ' "'
+            if (!isNumber(model_id)) {
+                return;
+            }
             object_id_input.val(model_id);
             content_type_input.val(content_type_id);
             searchDone(app);
