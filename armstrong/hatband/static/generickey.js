@@ -63,7 +63,7 @@ armstrong.widgets.generickey = function($, options) {
                 for (key in data) {
                   facets.data.push(key);
                 }
-                callback(facets.data);
+                callback(facets.data, true);
                 facets.inFlight = false;
               });
             }
@@ -74,7 +74,7 @@ armstrong.widgets.generickey = function($, options) {
                 var app_label = facets.raw[facet].app_label,
                     model = facet;
                 $.getJSON("/admin/" + app_label + "/" + model + "/search/", {q: searchTerm}, function(data) {
-                  callback(data.results);
+                  callback(data.results, true);
                 });
             }, 250);
           }
