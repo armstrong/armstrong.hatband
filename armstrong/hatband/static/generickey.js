@@ -36,6 +36,9 @@ armstrong.widgets.generickey = function($, options) {
             callback();
           },
           search : function(query) {
+            var isNumber = function(n) {
+              return !isNaN(parseFloat(n)) && isFinite(n);
+            }
             if (query.length <= 0) {
               return;
             }
@@ -43,6 +46,9 @@ armstrong.widgets.generickey = function($, options) {
                 model = result[0],
                 content_type_id = facets.raw[model].id,
                 model_id = result[1].slice(2); // ditch the ' "'
+            if (!isNumber(model_id)) {
+                return;
+            }
             object_id_input.val(model_id);
             content_type_input.val(content_type_id);
             searchDone(app);
@@ -57,7 +63,7 @@ armstrong.widgets.generickey = function($, options) {
                 for (key in data) {
                   facets.data.push(key);
                 }
-                callback(facets.data);
+                callback(facets.data, true);
                 facets.inFlight = false;
               });
             }
@@ -68,7 +74,7 @@ armstrong.widgets.generickey = function($, options) {
                 var app_label = facets.raw[facet].app_label,
                     model = facet;
                 $.getJSON("/admin/" + app_label + "/" + model + "/search/", {q: searchTerm}, function(data) {
-                  callback(data.results);
+                  callback(data.results, true);
                 });
             }, 250);
           }
