@@ -84,10 +84,9 @@ class AdminSite(DjangoAdminSite):
         # TODO: add test coverage for this
         content_type = ContentType.objects.get(app_label=app_label, model=model_name)
         model  = content_type.model_class()
-        model_admin = self._registry[model]
-        with preserve_attr(model_admin, "change_list_template"):
-            model_admin.change_list_template = "admin/hatband/change_list.json"
-            return model_admin.changelist_view(request)
+        model_admin = self._registry[model].__class__(model, self)
+        model_admin.change_list_template = "admin/hatband/change_list.json"
+        return model_admin.changelist_view(request)
 
     def render_model_preview(self, request):
         type = ContentType.objects.get(pk=request.GET["content_type"])
