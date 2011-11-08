@@ -69,6 +69,10 @@ armstrong.widgets.generickey = function($, options) {
             }
           },
           valueMatches : function(facet, searchTerm, callback) {
+            if (!facets.raw[facet]) {
+              return;  // nothing to query if there is no facet
+            }
+
             var model     = facet,
                 app_label = facets.raw[facet].app_label;
                 url       = options.baseLookupURL + app_label + "/" + model + "/";
