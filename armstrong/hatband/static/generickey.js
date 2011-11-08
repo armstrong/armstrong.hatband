@@ -69,13 +69,15 @@ armstrong.widgets.generickey = function($, options) {
             }
           },
           valueMatches : function(facet, searchTerm, callback) {
+            var model     = facet,
+                app_label = facets.raw[facet].app_label;
+                url       = options.baseLookupURL + app_label + "/" + model + "/";
+
             clearTimeout(this.requestTimeout);
             this.requestTimeout = setTimeout(function(){
-                var app_label = facets.raw[facet].app_label,
-                    model = facet;
-                $.getJSON("/admin/" + app_label + "/" + model + "/search/", {q: searchTerm}, function(data) {
-                  callback(data.results, true);
-                });
+              $.getJSON(url, {q: searchTerm}, function(data) {
+                callback(data.results, true);
+              });
             }, 250);
           }
         }
