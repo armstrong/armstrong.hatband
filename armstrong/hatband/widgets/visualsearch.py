@@ -48,7 +48,7 @@ class GenericKeyWidget(Widget):
             "query_lookup_url": (self.query_lookup_url or
                     reverse("admin:type_and_model_to_query")),
             "base_lookup_url": (self.base_lookup_url or
-                    reverse("admin:generic_key_modelsearch"))
+                    reverse("admin:index"))
 
         })
         return render_to_string(self.template, final_attrs)

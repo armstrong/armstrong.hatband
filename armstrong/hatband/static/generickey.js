@@ -75,7 +75,7 @@ armstrong.widgets.generickey = function($, options) {
 
             var model     = facet,
                 app_label = facets.raw[facet].app_label;
-                url       = options.baseLookupURL + app_label + "/" + model + "/";
+                url       = options.baseLookupURL + app_label + "/" + model + "/search/";
 
             clearTimeout(this.requestTimeout);
             this.requestTimeout = setTimeout(function(){

@@ -37,20 +37,23 @@ class AdminSite(DjangoAdminSite):
                     self.admin_view(self.type_and_model_to_query),
                     name="type_and_model_to_query",
                 ),
-            # an unusable base URL for reversing
-            url(r"^armstrong/search/$",
-                    self.admin_view(lambda request: HttpResponseBadRequest()),
-                    name="generic_key_modelsearch",
-                ),
-            url(r"^armstrong/search/(?P<app_label>\w+)/(?P<model_name>\w+)/$",
-                    self.admin_view(self.generic_key_modelsearch),
-                    name="generic_key_modelsearch"
-                ),
             url(r"^armstrong/render_model_preview/$",
                     self.admin_view(self.render_model_preview),
                     name="render_model_preview"
                 )
         ]
+        for model, model_admin in self._registry.iteritems():
+            search.append(
+                    url(r"^%s/%s/search/$" % (
+                            model._meta.app_label,
+                            model._meta.module_name),
+                    self.admin_view(self.generic_key_modelsearch),
+                    kwargs={'app_label': model._meta.app_label,
+                            'model_name': model._meta.module_name},
+                    name="%s_%s_search" % (
+                            model._meta.app_label,
+                            model._meta.module_name))
+                )
 
         urlpatterns = patterns('', *search)
 
