@@ -33,6 +33,10 @@ class AdminSite(DjangoAdminSite):
                     self.admin_view(self.generic_key_facets),
                     name="generic_key_facets",
                 ),
+            url(r"^armstrong/search/facet_values/$",
+                    self.admin_view(self.generic_key_modelsearch),
+                    name="generic_key_modelsearch"
+                ),
             url(r"^armstrong/search/type_and_model_to_query/$",
                     self.admin_view(self.type_and_model_to_query),
                     name="type_and_model_to_query",
@@ -98,12 +102,25 @@ class AdminSite(DjangoAdminSite):
 
         return HttpResponse(json.dumps({"query": data}))
 
-    def generic_key_modelsearch(self, request, app_label, model_name):
+    def generic_key_modelsearch(self, request, app_label=None, model_name=None):
         """
         Find instances for the requested model and return them as JSON.
         # TODO: add test coverage for this
 
         """
+        if not (app_label and model_name):
+            try:
+                app_label = request.GET['app_label']
+                model_name = request.GET['model_name']
+            except KeyError:
+                return HttpResponseBadRequest()
+
+            # Django ChangeList.get_query_set() will cry on unexpected GET params
+            mutable = request.GET.copy()
+            mutable.pop('app_label')
+            mutable.pop('model_name')
+            request.GET = mutable
+
         try:
             ctype = ContentType.objects.get(app_label=app_label, model=model_name)
         except ContentType.DoesNotExist:
