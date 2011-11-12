@@ -28,7 +28,7 @@ class AdminSite(DjangoAdminSite):
     def get_urls(self):
         from django.conf.urls.defaults import patterns, url
 
-        search = [
+        urlpatterns = patterns('',
             url(r"^armstrong/search/facets/$",
                     self.admin_view(self.generic_key_facets),
                     name="generic_key_facets",
@@ -45,9 +45,11 @@ class AdminSite(DjangoAdminSite):
                     self.admin_view(self.render_model_preview),
                     name="render_model_preview"
                 )
-        ]
+        )
+        
+        model_urls = []
         for model, model_admin in self._registry.iteritems():
-            search.append(
+            model_urls.append(
                     url(r"^%s/%s/search/$" % (
                             model._meta.app_label,
                             model._meta.module_name),
@@ -59,7 +61,7 @@ class AdminSite(DjangoAdminSite):
                             model._meta.module_name))
                 )
 
-        urlpatterns = patterns('', *search)
+        urlpatterns += patterns('', *model_urls)
 
         return urlpatterns + super(AdminSite, self).get_urls()
 
