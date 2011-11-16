@@ -108,6 +108,7 @@
                 armstrong.widgets.generickey($, {
                   facetURL: "{% url admin:generic_key_facets %}",
                   queryLookupURL: "{% url admin:type_and_model_to_query %}",
+                  baseLookupURL: "{% url admin:index %}",
                   id: row.find(".object_id input").attr("id")
                 });
                 initPrepopulatedFields(row);
