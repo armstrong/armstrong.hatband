@@ -29,7 +29,7 @@ class AdminSite(DjangoAdminSite):
         from django.conf.urls.defaults import patterns, url
 
         urlpatterns = patterns('',
-            url(r"^armstrong/search/facets/$",
+            url(r"^armstrong/search/generickey/facets/$",
                     self.admin_view(self.generic_key_facets),
                     name="generic_key_facets",
                 ),

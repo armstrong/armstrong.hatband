@@ -76,14 +76,13 @@ armstrong.widgets.generickey = function($, options) {
             var model     = facet,
                 app_label = facets.raw[facet].app_label;
             
-            if (options.baseLookupURL == undefined) {
+            if (typeof options.baseLookupURL == 'undefined' && 
+                typeof window.console != 'undefined') {
               console.warn("armstrong.hatband's generickey widget was not provided a base " +
                            "lookup URL for instance searching. Using a default of '/admin/'.");
-              var url = "/admin/";
-            } else {
-              var url = options.baseLookupURL; 
             }
-            url += app_label + "/" + model + "/search/";
+            var url = options.baseLookupURL || "/admin/";
+            url    += app_label + "/" + model + "/search/";
 
             clearTimeout(this.requestTimeout);
             this.requestTimeout = setTimeout(function(){
