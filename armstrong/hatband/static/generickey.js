@@ -1,6 +1,8 @@
 var jQuery = jQuery || django.jQuery;
 var armstrong = armstrong || {};
 armstrong.widgets = armstrong.widgets || {};
+armstrong.constants = armstrong.constants || {};
+armstrong.constants.hasWarn = typeof console !== "undefined" && typeof console.warn === "function";
 
 armstrong.widgets.generickey = function($, options) {
   var id = options.id,
@@ -75,9 +77,8 @@ armstrong.widgets.generickey = function($, options) {
 
             var model     = facet,
                 app_label = facets.raw[facet].app_label;
-            
-            if (typeof options.baseLookupURL == 'undefined' && 
-                typeof window.console != 'undefined') {
+
+            if (typeof options.baseLookupURL === 'undefined' && armstrong.constants.hasWarn) {
               console.warn("armstrong.hatband's generickey widget was not provided a base " +
                            "lookup URL for instance searching. Using a default of '/admin/'.");
             }
