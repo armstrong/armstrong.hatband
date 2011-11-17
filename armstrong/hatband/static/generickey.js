@@ -1,6 +1,8 @@
 var jQuery = jQuery || django.jQuery;
 var armstrong = armstrong || {};
 armstrong.widgets = armstrong.widgets || {};
+armstrong.constants = armstrong.constants || {};
+armstrong.constants.hasWarn = typeof console !== "undefined" && typeof console.warn === "function";
 
 armstrong.widgets.generickey = function($, options) {
   var id = options.id,
@@ -69,13 +71,25 @@ armstrong.widgets.generickey = function($, options) {
             }
           },
           valueMatches : function(facet, searchTerm, callback) {
+            if (!facets.raw[facet]) {
+              return;  // nothing to query if there is no facet
+            }
+
+            var model     = facet,
+                app_label = facets.raw[facet].app_label;
+
+            if (typeof options.baseLookupURL === 'undefined' && armstrong.constants.hasWarn) {
+              console.warn("armstrong.hatband's generickey widget was not provided a base " +
+                           "lookup URL for instance searching. Using a default of '/admin/'.");
+            }
+            var url = options.baseLookupURL || "/admin/";
+            url    += app_label + "/" + model + "/search/";
+
             clearTimeout(this.requestTimeout);
             this.requestTimeout = setTimeout(function(){
-                var app_label = facets.raw[facet].app_label,
-                    model = facet;
-                $.getJSON("/admin/" + app_label + "/" + model + "/search/", {q: searchTerm}, function(data) {
-                  callback(data.results, true);
-                });
+              $.getJSON(url, {q: searchTerm}, function(data) {
+                callback(data.results, true);
+              });
             }, 250);
           }
         }
