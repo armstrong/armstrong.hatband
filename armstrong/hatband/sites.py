@@ -84,19 +84,19 @@ class AdminSite(DjangoAdminSite):
 
         """
         try:
-            ctype = ContentType.objects.get(pk=request.GET.get("content_type_id"))
+            content_type = ContentType.objects.get(pk=request.GET.get("content_type_id"))
         except ContentType.DoesNotExist:
             return HttpResponseBadRequest()
 
         try:
-            model = ctype.model_class()
+            model = content_type.model_class()
             result = model.objects.get(pk=request.GET["object_id"])
         except KeyError:
             return HttpResponseBadRequest()
         except model.DoesNotExist:
             data = ""
         else:
-            data = '%s: "%d: %s"' % (ctype.model, result.pk, result)
+            data = '%s: "%d: %s"' % (content_type.model, result.pk, result)
 
         return HttpResponse(json.dumps({"query": data}))
 
@@ -107,11 +107,11 @@ class AdminSite(DjangoAdminSite):
 
         """
         try:
-            ctype = ContentType.objects.get(app_label=app_label, model=model_name)
+            content_type = ContentType.objects.get(app_label=app_label, model=model_name)
         except ContentType.DoesNotExist:
             return HttpResponseBadRequest()
 
-        model = ctype.model_class()
+        model = content_type.model_class()
         model_admin = self._registry[model].__class__(model, self)
         model_admin.change_list_template = "admin/hatband/change_list.json"
         return model_admin.changelist_view(request)
