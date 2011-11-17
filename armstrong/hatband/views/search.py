@@ -1,3 +1,4 @@
+from armstrong.core.arm_layout.utils import render_model
 from django.conf import settings
 from django.conf.urls.defaults import patterns
 from django.conf.urls.defaults import url
@@ -6,10 +7,7 @@ from django.db.models import Q
 from django.http import HttpResponse
 from django.http import HttpResponseBadRequest
 
-from armstrong.core.arm_layout.utils import render_model
-
-from ..decorators import json_response
-
+from ..http import JsonResponse
 
 EXCLUDED_MODELS_FROM_FACETS = getattr(settings,
     "ARMSTRONG_EXCLUDED_MODELS_FROM_FACETS", [
@@ -41,7 +39,6 @@ class GenericKeyFacetsMixin(ArmstrongBaseMixin):
         )
         return urlpatterns + super(GenericKeyFacetsMixin, self).get_urls()
 
-    @json_response
     def generic_key_facets(self, request):
         """Find all available facets/Models for VisualSearch"""
 
@@ -53,8 +50,8 @@ class GenericKeyFacetsMixin(ArmstrongBaseMixin):
         values = "model", "app_label", "id"
         content_types = ContentType.objects.values_list(*values) \
                 .exclude(excluded_apps | excluded_models)
-        return dict([(str(a), {"app_label": str(b), "id": str(c)})
-                for a, b, c in content_types])
+        return JsonResponse(dict([(str(a), {"app_label": str(b), "id": str(c)})
+                for a, b, c in content_types]))
 
 
 class ModelSearchBackfillMixin(object):
@@ -132,7 +129,6 @@ class TypeAndModelQueryMixin(ArmstrongBaseMixin):
         )
         return urlpatterns + super(TypeAndModelQueryMixin, self).get_urls()
 
-    @json_response
     def type_and_model_to_query(self, request):
         """
         Return JSON for an individual Model instance
@@ -157,4 +153,4 @@ class TypeAndModelQueryMixin(ArmstrongBaseMixin):
         else:
             data = '%s: "%d: %s"' % (content_type.model, result.pk, result)
 
-        return {"query": data}
+        return JsonResponse({"query": data})

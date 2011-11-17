@@ -4,6 +4,7 @@ __path__ = extend_path(__path__, __name__)
 from contextlib import contextmanager
 import fudge
 
+from .http import *
 from .sites import *
 from .widgets import *
 
