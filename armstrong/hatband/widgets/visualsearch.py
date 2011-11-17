@@ -20,7 +20,6 @@ class GenericKeyWidget(Widget):
                    )
         }
 
-
     def __init__(self, object_id_name="object_id",
                  content_type_name="content_type",
                  facet_url=None,

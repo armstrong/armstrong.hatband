@@ -28,4 +28,3 @@ class BackboneInline(InlineModelAdmin):
     formfield_overrides = forms.RICH_TEXT_DBFIELD_OVERRIDES
     template = "admin/edit_inline/backbone.html"
     extra = 0
-

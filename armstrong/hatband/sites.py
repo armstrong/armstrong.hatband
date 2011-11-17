@@ -42,7 +42,7 @@ class AdminSite(DjangoAdminSite):
                     name="render_model_preview"
                 )
         )
-        
+
         model_urls = []
         for model, model_admin in self._registry.iteritems():
             model_urls.append(
@@ -73,7 +73,8 @@ class AdminSite(DjangoAdminSite):
         values = "model", "app_label", "id"
         content_types = ContentType.objects.values_list(*values) \
                 .exclude(excluded_apps | excluded_models)
-        return dict([(str(a), {"app_label": str(b), "id": str(c)}) for a, b, c in content_types])
+        return dict([(str(a), {"app_label": str(b), "id": str(c)})
+                for a, b, c in content_types])
 
     def type_and_model_to_query(self, request):
         """
@@ -84,7 +85,8 @@ class AdminSite(DjangoAdminSite):
 
         """
         try:
-            content_type = ContentType.objects.get(pk=request.GET.get("content_type_id"))
+            content_type = ContentType.objects.get(
+                    pk=request.GET.get("content_type_id"))
         except ContentType.DoesNotExist:
             return HttpResponseBadRequest()
 
@@ -107,7 +109,8 @@ class AdminSite(DjangoAdminSite):
 
         """
         try:
-            content_type = ContentType.objects.get(app_label=app_label, model=model_name)
+            content_type = ContentType.objects.get(app_label=app_label,
+                    model=model_name)
         except ContentType.DoesNotExist:
             return HttpResponseBadRequest()
 
