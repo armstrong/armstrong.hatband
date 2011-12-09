@@ -118,11 +118,12 @@ class ModelPreviewMixin(ArmstrongBaseMixin):
 
 
 class TypeAndModelQueryMixin(ArmstrongBaseMixin):
-    url = "search/type_and_model_to_query/"
+    type_and_model_to_query_url = "search/type_and_model_to_query/"
 
     def get_urls(self):
         urlpatterns = patterns('',
-            url(r"^%s/%s$" % (self.url_prefix, self.url),
+            url(r"^%s/%s$" % (self.url_prefix,
+                              self.type_and_model_to_query_url),
                 self.admin_view(self.type_and_model_to_query),
                 name="type_and_model_to_query",
             )
