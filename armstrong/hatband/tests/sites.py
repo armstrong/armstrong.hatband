@@ -114,6 +114,9 @@ class ModelSearchBackfillMixinTestCase(HatbandViewTestCase):
         response = self.get_response()
         data = json.loads(response.content)
         self.assertEqual(1, len(data["results"]))
+        expected = "%s: %s" % (self.regular_user.pk,
+                self.regular_user.username)
+        self.assertEqual(expected, data["results"][0])
 
 
 class TypeAndModelToQueryViewTestCase(HatbandViewTestCase):
