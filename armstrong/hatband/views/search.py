@@ -83,11 +83,8 @@ class ModelSearchBackfillMixin(object):
         Find instances for the requested model and return them as JSON.
         # TODO: add test coverage for this
         """
-        try:
-            content_type = ContentType.objects.get(app_label=app_label,
-                    model=model_name)
-        except ContentType.DoesNotExist:
-            return HttpResponseBadRequest()
+        content_type = ContentType.objects.get(app_label=app_label,
+                model=model_name)
 
         model = content_type.model_class()
         model_admin = self._registry[model].__class__(model, self)
