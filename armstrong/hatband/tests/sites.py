@@ -7,6 +7,9 @@ from django.test.client import Client
 
 from ._utils import HatbandTestCase as TestCase
 from .hatband_support.models import *
+from .. import autodiscover
+
+autodiscover()
 
 PASSWORD = "password"
 
@@ -14,6 +17,7 @@ __all__ = [
     "GenericKeyFacetsViewTestCase",
     "TypeAndModelToQueryViewTestCase",
     "RenderModelPreviewTestCase",
+    "ModelSearchBackfillMixinTestCase",
 ]
 
 
@@ -24,15 +28,25 @@ def staff_login(func):
     return inner
 
 
+def admin_login(func):
+    def inner(self, *args, **kwargs):
+        self.client.login(username=self.admin.username, password=PASSWORD)
+        return func(self, *args, **kwargs)
+    return inner
+
+
 class HatbandViewTestCase(TestCase):
     def setUp(self):
         super(HatbandViewTestCase, self).setUp()
-        self.url = reverse(self.view_name)
+        if self.view_name:
+            self.url = reverse(self.view_name)
         self.client = Client()
         self.admin = User.objects.create_superuser(
                 username="test_admin",
                 email="test@example.com",
                 password=PASSWORD)
+        self.admin.is_superuser = True
+        self.admin.save()
 
         self.staff = User.objects.create_user(
                 username="test_staff",
@@ -77,6 +91,32 @@ class HatbandViewTestCase(TestCase):
 
 class GenericKeyFacetsViewTestCase(HatbandViewTestCase):
     view_name = "admin:generic_key_facets"
+
+
+class ModelSearchBackfillMixinTestCase(HatbandViewTestCase):
+    view_name_template = "admin:%s_%s_search"
+    view_name = False
+
+    def get_response(self):
+        return self.client.get(self.url, {"q": self.content_type.model})
+
+    def setUp(self):
+        super(ModelSearchBackfillMixinTestCase, self).setUp()
+        self.content_type = ContentType.objects.get(app_label="auth",
+                model="user")
+        view_name = self.view_name_template % (
+                self.content_type.app_label,
+                self.content_type.model)
+        self.url = reverse(view_name)
+
+    @admin_login
+    def test_search_returns_json(self):
+        response = self.get_response()
+        data = json.loads(response.content)
+        self.assertEqual(1, len(data["results"]))
+        expected = "%s: %s" % (self.regular_user.pk,
+                self.regular_user.username)
+        self.assertEqual(expected, data["results"][0])
 
 
 class TypeAndModelToQueryViewTestCase(HatbandViewTestCase):
