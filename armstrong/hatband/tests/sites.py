@@ -123,7 +123,7 @@ class TypeAndModelToQueryViewTestCase(HatbandViewTestCase):
     view_name = "admin:type_and_model_to_query"
 
     def get_response(self):
-        content_type = ContentType.objects.all()[0]
+        content_type = ContentType.objects.get_for_model(User)
         obj = content_type.model_class().objects.all()[0]
         return self.client.get(self.url, {
                 "content_type_id": content_type.pk,
