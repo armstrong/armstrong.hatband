@@ -70,8 +70,8 @@ Foundation`_.
 
 To follow development, be sure to join the `Google Group`_.
 
-``armstrong.cli`` is part of the `Armstrong`_ project.  You're
-probably looking for that.
+``armstrong.hatband`` is part of the `Armstrong`_ project.  You're probably
+looking for that.
 
 .. _Texas Tribune: http://www.texastribune.org/
 .. _Bay Citizen: http://www.baycitizen.org/
