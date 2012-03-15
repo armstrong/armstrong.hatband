@@ -3,22 +3,48 @@ armstrong.hatband
 Provides administrative interface and utilities for use in `Armstrong`_.
 
 
-.. warning:: This is development level software.  Please do not unless you are
-             familiar with what that means and are comfortable using that type
-             of software.
-
 Usage
 -----
 
 **TODO**
 
-Installation
-------------
+Installation & Configuration
+----------------------------
+You can install the latest release of ``armstrong.hatband`` using `pip`_:
 
 ::
 
-    name="armstrong.hatband"
-    pip install -e git://github.com/armstrong/$name.git#egg=$name
+    pip install armstrong.hatband
+
+Make sure to add ``armstrong.hatband`` and ``django.contrib.admin`` to your
+``INSTALLED_APPS``.  You can add this however you like.  This works as a
+copy-and-paste solution:
+
+::
+
+	INSTALLED_APPS += ["armstrong.hatband", "django.contrib.admin", ]
+
+Once installed, you must run ``syncdb`` in order to installed Django's admin
+models.
+
+Finally, you must alter your URL configuration.  At the top of your ``urls``
+module (``urls.defaults`` in an Armstrong project), make sure to change this
+line:
+
+::
+
+    from django.contrib import admin
+
+To:
+
+::
+    from armstrong import hatband as admin
+
+The rest of the URL configuration stays identical to what is expected for the
+traditional Django admin.
+
+.. _pip: http://www.pip-installer.org/
+.. _South: http://south.aeracode.org/
 
 
 Contributing
