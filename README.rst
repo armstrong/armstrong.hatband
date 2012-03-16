@@ -24,8 +24,9 @@ copy-and-paste solution:
 
 	INSTALLED_APPS += ["armstrong.hatband", "django.contrib.admin", ]
 
-Once installed, you must run ``syncdb`` in order to installed Django's admin
-models.
+Once installed, you must run ``syncdb`` in order to install Django's admin
+models.  This is only required if you did not have Django's admin already
+installed and configured.
 
 Finally, you must alter your URL configuration.  At the top of your ``urls``
 module (``urls.defaults`` in an Armstrong project), make sure to change this
