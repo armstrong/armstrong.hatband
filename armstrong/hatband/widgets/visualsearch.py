@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.forms import Widget
 from django.template.loader import render_to_string
@@ -8,17 +9,18 @@ from ..utils import static_url
 class GenericKeyWidget(Widget):
     template = "admin/hatband/widgets/generickey.html"
 
-    class Media:
-        js = (static_url("visualsearch/dependencies.js"),
-              static_url("visualsearch/visualsearch.js"),
-              static_url("generickey.js"),
-             )
+    if getattr(settings, "ARMSTRONG_HATBAND_DEFAULT_MEDIA", True):
+        class Media:
+            js = (static_url("visualsearch/dependencies.js"),
+                  static_url("visualsearch/visualsearch.js"),
+                  static_url("generickey.js"),
+                 )
 
-        css = {
-            "all": (static_url("visualsearch/visualsearch.css"),
-                    static_url("hatband/css/generickey.css"),
-                   )
-        }
+            css = {
+                "all": (static_url("visualsearch/visualsearch.css"),
+                        static_url("hatband/css/generickey.css"),
+                       )
+            }
 
     def __init__(self, object_id_name="object_id",
                  content_type_name="content_type",
