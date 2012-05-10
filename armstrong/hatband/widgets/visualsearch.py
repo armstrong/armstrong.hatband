@@ -9,7 +9,7 @@ from ..utils import static_url
 class GenericKeyWidget(Widget):
     template = "admin/hatband/widgets/generickey.html"
 
-    if getattr(settings, "ARMSTRONG_HATBAND_DEFAULT_MEDIA", True):
+    if getattr(settings, "ARMSTRONG_ADMIN_PROVIDE_STATIC", True):
         class Media:
             js = (static_url("visualsearch/dependencies.js"),
                   static_url("visualsearch/visualsearch.js"),
