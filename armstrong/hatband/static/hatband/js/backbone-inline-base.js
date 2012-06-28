@@ -13,7 +13,7 @@ Item = Backbone.Model.extend({
     },
     readInput: function(input) {
         input = $(input);
-        var value = {}
+        var value = {};
         value[input.attr('name').substr(this.attributes.prefix.length)] = input.val();
         this.set(value, {silent: true});
     },
@@ -37,7 +37,7 @@ ItemList = Backbone.Collection.extend({
             var obj = new this.model({prefix: el.id+"-"});
             this.add(obj);
         }, this));
-    },
+    }
 });
 
 ManagementForm = Backbone.View.extend({
@@ -49,11 +49,11 @@ ManagementForm = Backbone.View.extend({
     update: function() {
         $("#id_"+this.options.namespace+"-TOTAL_FORMS").val(this.options.collection.length);
     }
-})
+});
 
 EmptyForm = Backbone.View.extend({
     elements: function() {
-        return this.$('input[id*="__prefix__"]')
+        return this.$('input[id*="__prefix__"]');
     },
     cloneForm: function(formId) {
         return this.elements().map(function(idx, el) {
@@ -64,7 +64,7 @@ EmptyForm = Backbone.View.extend({
             return newEl.get();
         });
     }
-})
+});
 
 ListItemView = Backbone.View.extend({
     tagName: "div",
@@ -107,7 +107,7 @@ ListView = Backbone.View.extend({
     collection_class: ItemList,
     initialize: function() {
         if (!this.collection) {
-            this.collection = new this.collection_class;
+            this.collection = new this.collection_class();
             this.collection.parseForm(this.options.namespace);
         }
         this.options.managementForm = new ManagementForm({
@@ -165,7 +165,7 @@ SortableListView = ListView.extend({
             return this.collection.getByCid($(item).attr('id'));
         }, this));
         _.each(models, _.bind(function(model, idx, list) {
-            args = {}
+            args = {};
             args[this.model_order_attribute] = idx;
             model.set(args);
         }, this));
