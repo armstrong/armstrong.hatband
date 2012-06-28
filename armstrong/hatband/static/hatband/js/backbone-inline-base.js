@@ -78,8 +78,12 @@ ListItemView = Backbone.View.extend({
         var html = this.options.template(this.model.toJSON());
         $(this.el).html(html);
         if (this.model.get("hatband_display") === undefined) {
+            queryparams = {
+                'content_type': this.model.attributes.content_type,
+                'object_id': this.model.attributes.object_id,
+                'template': this.model.attributes.template};
             $.get(this.options.preview_url,
-                  this.model.attributes,
+                  queryparams,
                   _.bind(function(data, status, jqXHR) {
                       this.model.set({hatband_display: data});
                   }, this),

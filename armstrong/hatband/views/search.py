@@ -108,8 +108,8 @@ class ModelPreviewMixin(ArmstrongBaseMixin):
         return urlpatterns + super(ModelPreviewMixin, self).get_urls()
 
     def render_model_preview(self, request):
-        type = ContentType.objects.get(pk=request.GET["content_type"])
-        model = type.model_class().objects.get(pk=request.GET["object_id"])
+        content_type = ContentType.objects.get(pk=request.GET["content_type"])
+        model = content_type.model_class().objects.get(pk=request.GET["object_id"])
         template = request.GET.get("template", "preview")
         return HttpResponse(render_model(model, template))
 
