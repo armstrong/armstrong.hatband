@@ -1,11 +1,11 @@
-from armstrong.core.arm_layout.utils import render_model
 from django.conf import settings
-from django.conf.urls.defaults import patterns
-from django.conf.urls.defaults import url
+from django.conf.urls.defaults import url, patterns
 from django.contrib.contenttypes.models import ContentType
 from django.db.models import Q
-from django.http import HttpResponse
-from django.http import HttpResponseBadRequest
+from django.http import HttpResponse, HttpResponseBadRequest
+from django.core.exceptions import ObjectDoesNotExist
+
+from armstrong.core.arm_layout.utils import render_model
 
 from ..http import JsonResponse
 
@@ -108,10 +108,16 @@ class ModelPreviewMixin(ArmstrongBaseMixin):
         return urlpatterns + super(ModelPreviewMixin, self).get_urls()
 
     def render_model_preview(self, request):
-        content_type = ContentType.objects.get(pk=request.GET["content_type"])
-        model = content_type.model_class().objects.get(pk=request.GET["object_id"])
+        try:
+            content_type = ContentType.objects.get(
+                    pk=request.GET["content_type"])
+            model = content_type.model_class()
+            result = model.objects.get(pk=request.GET["object_id"])
+        except (KeyError, ObjectDoesNotExist):
+            return HttpResponseBadRequest()
+
         template = request.GET.get("template", "preview")
-        return HttpResponse(render_model(model, template))
+        return HttpResponse(render_model(result, template))
 
 
 class TypeAndModelQueryMixin(ArmstrongBaseMixin):
