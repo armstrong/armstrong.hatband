@@ -82,6 +82,9 @@ class ModelSearchBackfillMixin(object):
         """
         Find instances for the requested model and return them as JSON.
         # TODO: add test coverage for this
+
+        We don't have to worry about invalid app_label/model_name parameters
+        because the URLs are pre-built with the kwargs in `get_urls()`.
         """
         content_type = ContentType.objects.get(app_label=app_label,
                 model=model_name)
@@ -143,8 +146,8 @@ class TypeAndModelQueryMixin(ArmstrongBaseMixin):
         """
         try:
             content_type = ContentType.objects.get(
-                    pk=request.GET.get("content_type_id"))
-        except ContentType.DoesNotExist:
+                    pk=request.GET["content_type_id"])
+        except (KeyError, ContentType.DoesNotExist):
             return HttpResponseBadRequest()
 
         try:
