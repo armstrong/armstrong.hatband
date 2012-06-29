@@ -11,15 +11,16 @@ from ..http import JsonResponse
 
 EXCLUDED_MODELS_FROM_FACETS = getattr(settings,
     "ARMSTRONG_EXCLUDED_MODELS_FROM_FACETS", [
-        ("arm_wells", "welltype"),
-
-        # remove this next line if we decide to support this
+        # usage: ("app_label", "model_name"),
+        ('taggit', 'taggeditem'),
         ("arm_wells", "well"),
+        ("arm_wells", "node"),
     ])
 
 EXCLUDED_APPS_FROM_FACETS = getattr(settings,
     "ARMSTRONG_EXCLUDED_APPS_FROM_FACETS", [
-        "admin", "auth", "contenttype", "reversion", "sessions", "sites",
+        "admin", "arm_access", "auth", "contenttype", "djcelery",
+        "registration", "reversion", "sessions", "sites", "south"
     ])
 
 
