@@ -2,7 +2,8 @@ from django.conf import settings
 from django.conf.urls.defaults import url, patterns
 from django.contrib.contenttypes.models import ContentType
 from django.db.models import Q
-from django.http import HttpResponse, HttpResponseBadRequest
+from django.http import HttpResponse
+from django.http import HttpResponseBadRequest, HttpResponseNotFound
 from django.core.exceptions import ObjectDoesNotExist
 
 from armstrong.core.arm_layout.utils import render_model
@@ -113,12 +114,17 @@ class ModelPreviewMixin(ArmstrongBaseMixin):
 
     def render_model_preview(self, request):
         try:
-            content_type = ContentType.objects.get(
-                    pk=request.GET["content_type"])
-            model = content_type.model_class()
-            result = model.objects.get(pk=request.GET["object_id"])
-        except (KeyError, ObjectDoesNotExist):
+            content_type_id = request.GET["content_type"]
+            object_id = request.GET["object_id"]
+        except KeyError:
             return HttpResponseBadRequest()
+
+        try:
+            content_type = ContentType.objects.get(pk=content_type_id)
+            model = content_type.model_class()
+            result = model.objects.get(pk=object_id)
+        except ObjectDoesNotExist:
+            return HttpResponseNotFound()
 
         template = request.GET.get("template", "preview")
         return HttpResponse(render_model(result, template))
@@ -146,17 +152,16 @@ class TypeAndModelQueryMixin(ArmstrongBaseMixin):
 
         """
         try:
-            content_type = ContentType.objects.get(
-                    pk=request.GET["content_type_id"])
-        except (KeyError, ContentType.DoesNotExist):
+            content_type_id = request.GET["content_type_id"]
+            object_id = request.GET["object_id"]
+        except KeyError:
             return HttpResponseBadRequest()
 
         try:
+            content_type = ContentType.objects.get(pk=content_type_id)
             model = content_type.model_class()
-            result = model.objects.get(pk=request.GET["object_id"])
-        except KeyError:
-            return HttpResponseBadRequest()
-        except model.DoesNotExist:
+            result = model.objects.get(pk=object_id)
+        except ObjectDoesNotExist:
             data = ""
         else:
             data = '%s: "%d: %s"' % (content_type.model, result.pk, result)
