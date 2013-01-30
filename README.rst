@@ -39,6 +39,7 @@ line:
 To:
 
 ::
+
     from armstrong import hatband as admin
 
 The rest of the URL configuration stays identical to what is expected for the
