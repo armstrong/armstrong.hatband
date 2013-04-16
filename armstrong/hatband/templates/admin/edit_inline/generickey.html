@@ -1,5 +1,5 @@
 {% load i18n admin_modify %}
-{% load admin_media_prefix from shims %}
+{% load admin_media_prefix_shim from shims %}
 {% load url from future %}
 <div class="inline-group generickeywidget" id="{{ inline_admin_formset.formset.prefix }}-group">
   <div class="tabular inline-related {% if forloop.last %}last-related{% endif %}">
@@ -76,11 +76,11 @@
             if (typeof SelectFilter != "undefined"){
                 $(".selectfilter").each(function(index, value){
                   var namearr = value.name.split('-');
-                  SelectFilter.init(value.id, namearr[namearr.length-1], false, "{% admin_media_prefix %}");
+                  SelectFilter.init(value.id, namearr[namearr.length-1], false, "{% admin_media_prefix_shim %}");
                 });
                 $(".selectfilterstacked").each(function(index, value){
                   var namearr = value.name.split('-');
-                  SelectFilter.init(value.id, namearr[namearr.length-1], true, "{% admin_media_prefix %}");
+                  SelectFilter.init(value.id, namearr[namearr.length-1], true, "{% admin_media_prefix_shim %}");
                 });
             }
         }
