@@ -7,7 +7,7 @@ from django.test.client import Client
 
 from armstrong.hatband import autodiscover
 from ._utils import HatbandTestCase
-from .hatband_support.models import TestArticle, TestCategory
+from .support.models import TestArticle, TestCategory
 
 autodiscover()
 

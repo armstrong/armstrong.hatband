@@ -70,7 +70,7 @@ class AutodiscoverTestCase(HatbandTestCase):
     @fudge.test
     def test_has_hatband_registered_plus_(self):
         with fake_django_site_registry(self) as random_registry:
-            from .hatband_support.models import TestCategory
+            from .support.models import TestCategory
 
             self.assertFalse(TestCategory in hatband.site._registry.keys(),
                     msg="Sanity check")
@@ -86,7 +86,7 @@ class AutodiscoverTestCase(HatbandTestCase):
     @fudge.test
     def test_original_django_sites_registry_remains_untouched(self):
         with fake_django_site_registry(self) as random_registry:
-            from .hatband_support.models import TestCategory
+            from .support.models import TestCategory
             self.assertFalse(TestCategory in random_registry.keys())
             hatband.site.register(TestCategory)
             hatband.autodiscover()
