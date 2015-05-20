@@ -1,0 +1,6 @@
+[run]
+source = armstrong.hatband
+branch = True
+
+[html]
+directory = coverage
