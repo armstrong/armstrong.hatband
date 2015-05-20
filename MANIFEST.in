@@ -5,3 +5,4 @@ include package.json
 recursive-include armstrong/hatband/static *
 recursive-include armstrong/hatband/templates *
 prune build/*
+prune tests

@@ -1,13 +1,14 @@
-from armstrong import hatband
-from . import models
 from django.db.models import TextField
 from django.forms.widgets import TextInput
+
+from armstrong import hatband
+from .models import TestArticle, TestCategory
 
 
 class ArticleAdmin(hatband.ModelAdmin):
 
     class Meta:
-        model = models.TestArticle
+        model = TestArticle
 
 
 class ArticleOverrideAdmin(hatband.ModelAdmin):
@@ -17,19 +18,19 @@ class ArticleOverrideAdmin(hatband.ModelAdmin):
     }
 
     class Meta:
-        model = models.TestArticle
+        model = TestArticle
 
 
 class ArticleTabularInline(hatband.TabularInline):
 
     class Meta:
-        model = models.TestArticle
+        model = TestArticle
 
 
 class ArticleStackedInline(hatband.StackedInline):
 
     class Meta:
-        model = models.TestArticle
+        model = TestArticle
 
 
 class CategoryAdminTabbed(hatband.ModelAdmin):
@@ -37,7 +38,7 @@ class CategoryAdminTabbed(hatband.ModelAdmin):
     inlines = ArticleTabularInline
 
     class Meta:
-        model = models.TestCategory
+        model = TestCategory
 
 
 class CategoryAdminStacked(hatband.ModelAdmin):
@@ -45,4 +46,4 @@ class CategoryAdminStacked(hatband.ModelAdmin):
     inlines = ArticleStackedInline
 
     class Meta:
-        model = models.TestCategory
+        model = TestCategory

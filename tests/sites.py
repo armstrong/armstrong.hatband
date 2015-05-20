@@ -5,9 +5,9 @@ from django.contrib.contenttypes.models import ContentType
 from django.core.urlresolvers import reverse
 from django.test.client import Client
 
-from ._utils import HatbandTestCase as TestCase
-from .hatband_support.models import *
-from .. import autodiscover
+from armstrong.hatband import autodiscover
+from ._utils import HatbandTestCase
+from .hatband_support.models import TestArticle, TestCategory
 
 autodiscover()
 
@@ -35,7 +35,7 @@ def admin_login(func):
     return inner
 
 
-class HatbandViewTestCase(TestCase):
+class HatbandViewTestCase(HatbandTestCase):
     def setUp(self):
         super(HatbandViewTestCase, self).setUp()
         if self.view_name:

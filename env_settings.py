@@ -6,7 +6,7 @@ INSTALLED_APPS.extend([
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
-    'armstrong.hatband.tests.hatband_support'
+    'tests.hatband_support'
 ])
 MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
@@ -17,4 +17,4 @@ MIDDLEWARE_CLASSES = (
 )
 
 STATIC_URL = "/static/"
-ROOT_URLCONF = 'armstrong.hatband.tests.hatband_support.urls'
+ROOT_URLCONF = 'tests.hatband_support.urls'

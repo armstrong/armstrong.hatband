@@ -1,11 +1,12 @@
 from contextlib import contextmanager
 import fudge
 
+from armstrong import hatband
+
 from .http import *
 from .sites import *
 from .widgets import *
-
-from ... import hatband
+from ._utils import HatbandTestCase
 
 
 def generate_random_registry():
