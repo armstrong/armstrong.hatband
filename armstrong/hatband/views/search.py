@@ -69,14 +69,14 @@ class ModelSearchBackfillMixin(object):
             model_urls.append(
                     url(r"^%s/%s/%s/$" % (
                             model._meta.app_label,
-                            model._meta.module_name,
+                            model._meta.object_name.lower(),
                             self.slug),
                     self.admin_view(self.generic_key_modelsearch),
                     kwargs={'app_label': model._meta.app_label,
-                            'model_name': model._meta.module_name},
+                            'model_name': model._meta.object_name.lower()},
                     name=self.view_name_template % (
                             model._meta.app_label,
-                            model._meta.module_name))
+                            model._meta.object_name.lower()))
                 )
 
         return patterns('', *model_urls) \
