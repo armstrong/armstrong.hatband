@@ -74,14 +74,14 @@ class HatbandViewTestCase(TestCase):
             self.client.login(username=user.username, password=PASSWORD)
         response = self.get_response()
         self.assertRegexpMatches(response.content,
-                r'<input id="id_username"')
+                r'name="this_is_the_login_form"')
         if user is not None:
             self.client.logout()
 
     def test_requires_staff_user(self):
         self.assert_not_allowed(user=None)
 
-        pattern = r'<input id="id_username"'
+        pattern = r'name="this_is_the_login_form"'
         self.assert_not_pattern_for_user(self.admin, pattern)
         self.assert_not_pattern_for_user(self.staff, pattern)
 
