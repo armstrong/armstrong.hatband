@@ -14,5 +14,5 @@ class JsonResponseTestCase(TestCase):
         }
 
         response = JsonResponse(data)
-        self.assertIsA(response.content, str, msg="sanity check")
+        self.assertIsInstance(response.content, basestring)
         self.assertEqual(json.loads(response.content), data)
