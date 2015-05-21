@@ -1,6 +1,7 @@
+include LICENSE
 include MANIFEST.in
 include README.rst
-include LICENSE
+include CHANGES.rst
 include package.json
 recursive-include armstrong/hatband/static *
 recursive-include armstrong/hatband/templates *

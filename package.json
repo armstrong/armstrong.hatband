@@ -1,7 +1,7 @@
 {
     "name": "armstrong.hatband",
     "version": "1.4.0",
-    "description": "The administrative interface for Armstrong",
+    "description": "An enhanced Django admin interface for Armstrong",
     "install_requires": [
         "armstrong.utils.backends>=1.0.0,<2.0",
         "armstrong.core.arm_layout>=1.1.1,<2.0"

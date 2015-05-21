@@ -1,6 +1,14 @@
 armstrong.hatband
 =================
-Provides administrative interface and utilities for use in `Armstrong`_.
+Provides an enhanced Django admin interface and utilities for use in
+`Armstrong`_.
+
+Notably it brings `VisualSearch.js`_ for fast content lookup, `CKEditor`_
+as a fully featured rich-text editor and other features like drag 'n drop
+JavaScript for easy programming of orderable content (like lists).
+
+.. _VisualSearch.js: http://documentcloud.github.io/visualsearch/
+.. _CKEditor: http://ckeditor.com/
 
 
 Usage
@@ -8,92 +16,51 @@ Usage
 
 **TODO**
 
+
 Installation & Configuration
 ----------------------------
-You can install the latest release of ``armstrong.hatband`` using `pip`_:
+Supports Django 1.3, 1.4, 1.5, 1.6 on Python 2.6 and 2.7.
 
-::
+#. ``pip install armstrong.hatband``
 
-    pip install armstrong.hatband
+#. Add ``armstrong.hatband`` to your ``INSTALLED_APPS``
 
-Make sure to add ``armstrong.hatband`` and ``django.contrib.admin`` to your
-``INSTALLED_APPS``.  You can add this however you like.  This works as a
-copy-and-paste solution:
+#. In ``urls.py`` replace the normal admin with Hatband,
+   ``from armstrong import hatband as admin``.
 
-::
-
-	INSTALLED_APPS += ["armstrong.hatband", "django.contrib.admin", ]
-
-Once installed, you must run ``syncdb`` in order to install Django's admin
-models.  This is only required if you did not have Django's admin already
-installed and configured.
-
-Finally, you must alter your URL configuration.  At the top of your ``urls``
-module (``urls.defaults`` in an Armstrong project), make sure to change this
-line:
-
-::
-
-    from django.contrib import admin
-
-To:
-
-::
-
-    from armstrong import hatband as admin
-
-The rest of the URL configuration stays identical to what is expected for the
-traditional Django admin.
-
-.. _pip: http://www.pip-installer.org/
-.. _South: http://south.aeracode.org/
+   The rest of the URL configuration stays identical to what is expected for
+   the traditional Django admin.
 
 
 Contributing
 ------------
+Development occurs on Github. Participation is welcome!
 
-* Create something awesome -- make the code better, add some functionality,
-  whatever (this is the hardest part).
-* `Fork it`_
-* Create a topic branch to house your changes
-* Get all of your commits in the new topic branch
-* Submit a `pull request`_
+* Found a bug? File it on `Github Issues`_. Include as much detail as you
+  can and make sure to list the specific component since we use a centralized,
+  project-wide issue tracker.
+* Testing? ``pip install tox`` and run ``tox``
+* Have code to submit? Fork the repo, consolidate your changes on a topic
+  branch and create a `pull request`_. The `armstrong.dev`_ package provides
+  tools for testing, coverage and South migration as well as making it very
+  easy to run a full Django environment with this component's settings.
+* Questions, need help, discussion? Use our `Google Group`_ mailing list.
 
-.. _Fork it: http://help.github.com/forking/
+.. _Github Issues: https://github.com/armstrong/armstrong/issues
 .. _pull request: http://help.github.com/pull-requests/
+.. _armstrong.dev: https://github.com/armstrong/armstrong.dev
+.. _Google Group: http://groups.google.com/group/armstrongcms
 
 
 State of Project
 ----------------
-Armstrong is an open-source news platform that is freely available to any
-organization.  It is the result of a collaboration between the `Texas Tribune`_
-and `Bay Citizen`_, and a grant from the `John S. and James L. Knight
-Foundation`_.
+`Armstrong`_ is an open-source news platform that is freely available to any
+organization. It is the result of a collaboration between the `Texas Tribune`_
+and `Bay Citizen`_ and a grant from the `John S. and James L. Knight
+Foundation`_. Armstrong is available as a complete bundle and as individual,
+stand-alone components.
 
-To follow development, be sure to join the `Google Group`_.
-
-``armstrong.hatband`` is part of the `Armstrong`_ project.  You're probably
-looking for that.
-
-.. _Texas Tribune: http://www.texastribune.org/
-.. _Bay Citizen: http://www.baycitizen.org/
-.. _John S. and James L. Knight Foundation: http://www.knightfoundation.org/
-.. _Google Group: http://groups.google.com/group/armstrongcms
 .. _Armstrong: http://www.armstrongcms.org/
-
-
-License
--------
-Copyright 2011-2012 Bay Citizen and Texas Tribune
-
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-   http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
+.. _Bay Citizen: http://www.baycitizen.org/
+.. _Texas Tribune: http://www.texastribune.org/
+.. _John S. and James L. Knight Foundation: http://www.knightfoundation.org/
