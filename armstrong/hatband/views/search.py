@@ -114,9 +114,9 @@ class ModelPreviewMixin(ArmstrongBaseMixin):
 
     def render_model_preview(self, request):
         try:
-            content_type_id = request.GET["content_type"]
-            object_id = request.GET["object_id"]
-        except KeyError:
+            content_type_id = int(request.GET["content_type"])
+            object_id = int(request.GET["object_id"])
+        except (ValueError, KeyError):
             return HttpResponseBadRequest()
 
         try:
