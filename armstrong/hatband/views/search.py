@@ -2,7 +2,8 @@ from django.conf import settings
 from django.contrib.contenttypes.models import ContentType
 from django.db.models import Q
 from django.http import HttpResponse
-from django.http import HttpResponseBadRequest
+from django.http import HttpResponseBadRequest, HttpResponseNotFound
+from django.core.exceptions import ObjectDoesNotExist
 
 try:
     from django.conf.urls import patterns, url
@@ -13,17 +14,19 @@ from armstrong.core.arm_layout.utils import render_model
 
 from ..http import JsonResponse
 
+
 EXCLUDED_MODELS_FROM_FACETS = getattr(settings,
     "ARMSTRONG_EXCLUDED_MODELS_FROM_FACETS", [
-        ("arm_wells", "welltype"),
-
-        # remove this next line if we decide to support this
+        # usage: ("app_label", "model_name"),
+        ('taggit', 'taggeditem'),
         ("arm_wells", "well"),
+        ("arm_wells", "node"),
     ])
 
 EXCLUDED_APPS_FROM_FACETS = getattr(settings,
     "ARMSTRONG_EXCLUDED_APPS_FROM_FACETS", [
-        "admin", "auth", "contenttype", "reversion", "sessions", "sites",
+        "admin", "arm_access", "auth", "contenttypes", "djcelery",
+        "registration", "reversion", "sessions", "sites", "south"
     ])
 
 
@@ -86,6 +89,9 @@ class ModelSearchBackfillMixin(object):
         """
         Find instances for the requested model and return them as JSON.
         # TODO: add test coverage for this
+
+        We don't have to worry about invalid app_label/model_name parameters
+        because the URLs are pre-built with the kwargs in `get_urls()`.
         """
         content_type = ContentType.objects.get(app_label=app_label,
                 model=model_name)
@@ -112,10 +118,21 @@ class ModelPreviewMixin(ArmstrongBaseMixin):
         return urlpatterns + super(ModelPreviewMixin, self).get_urls()
 
     def render_model_preview(self, request):
-        type = ContentType.objects.get(pk=request.GET["content_type"])
-        model = type.model_class().objects.get(pk=request.GET["object_id"])
+        try:
+            content_type_id = int(request.GET["content_type"])
+            object_id = int(request.GET["object_id"])
+        except (ValueError, KeyError):
+            return HttpResponseBadRequest()
+
+        try:
+            content_type = ContentType.objects.get(pk=content_type_id)
+            model = content_type.model_class()
+            result = model.objects.get(pk=object_id)
+        except ObjectDoesNotExist:
+            return HttpResponseNotFound()
+
         template = request.GET.get("template", "preview")
-        return HttpResponse(render_model(model, template))
+        return HttpResponse(render_model(result, template))
 
 
 class TypeAndModelQueryMixin(ArmstrongBaseMixin):
@@ -140,17 +157,16 @@ class TypeAndModelQueryMixin(ArmstrongBaseMixin):
 
         """
         try:
-            content_type = ContentType.objects.get(
-                    pk=request.GET.get("content_type_id"))
-        except ContentType.DoesNotExist:
+            content_type_id = request.GET["content_type_id"]
+            object_id = request.GET["object_id"]
+        except KeyError:
             return HttpResponseBadRequest()
 
         try:
+            content_type = ContentType.objects.get(pk=content_type_id)
             model = content_type.model_class()
-            result = model.objects.get(pk=request.GET["object_id"])
-        except KeyError:
-            return HttpResponseBadRequest()
-        except model.DoesNotExist:
+            result = model.objects.get(pk=object_id)
+        except ObjectDoesNotExist:
             data = ""
         else:
             data = '%s: "%d: %s"' % (content_type.model, result.pk, result)

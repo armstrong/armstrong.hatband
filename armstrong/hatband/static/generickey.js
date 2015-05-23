@@ -23,7 +23,7 @@ armstrong.widgets.generickey = function($, options) {
       var facets = {
         inFlight: false,
         data: [],
-        raw: false,
+        raw: false
       };
       options.query = options.query || '';
       var app = VS.init({
@@ -40,7 +40,7 @@ armstrong.widgets.generickey = function($, options) {
           search : function(query) {
             var isNumber = function(n) {
               return !isNaN(parseFloat(n)) && isFinite(n);
-            }
+            };
             if (query.length <= 0) {
               return;
             }
@@ -62,7 +62,7 @@ armstrong.widgets.generickey = function($, options) {
               facets.inFlight = true;
               $.getJSON(options.facetURL, function(data) {
                 facets.raw = data;
-                for (key in data) {
+                for (var key in data) {
                   facets.data.push(key);
                 }
                 callback(facets.data, true);
@@ -99,7 +99,7 @@ armstrong.widgets.generickey = function($, options) {
 
   if (params.content_type_id) {
     $.getJSON(options.queryLookupURL, params, function(data) {
-      options.query = data.query
+      options.query = data.query;
       return initVisualSearch();
       });
   } else {
