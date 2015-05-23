@@ -20,7 +20,7 @@ EXCLUDED_MODELS_FROM_FACETS = getattr(settings,
 
 EXCLUDED_APPS_FROM_FACETS = getattr(settings,
     "ARMSTRONG_EXCLUDED_APPS_FROM_FACETS", [
-        "admin", "arm_access", "auth", "contenttype", "djcelery",
+        "admin", "arm_access", "auth", "contenttypes", "djcelery",
         "registration", "reversion", "sessions", "sites", "south"
     ])
 
