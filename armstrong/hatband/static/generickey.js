@@ -30,6 +30,7 @@ armstrong.widgets.generickey = function($, options) {
         container  : container,
         query      : options.query,
         unquotable : [],
+        showFacets : true,
         callbacks  : {
           clearSearch: function(callback) {
             content_type_input.removeAttr("value");
