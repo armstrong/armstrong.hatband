@@ -1,6 +1,5 @@
-from django.conf import settings
-from .._utils import *
-from ...widgets import CKEditorWidget
+from .._utils import HatbandTestCase
+from armstrong.hatband.widgets import CKEditorWidget
 
 
 class CKEditorTestCase(HatbandTestCase):

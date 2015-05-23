@@ -1,7 +1,8 @@
-from .._utils import *
-from ...widgets import CKEditorWidget, RichTextWidget
 from django.forms.widgets import Textarea
-from django.conf import settings
+
+from .._utils import HatbandTestCase
+from armstrong.hatband.widgets import CKEditorWidget, RichTextWidget
+
 
 TEST_SETTINGS = {
     "ARMSTRONG_HATBAND_RICHTEXTEDITOR": "django.forms.widgets.Textarea",

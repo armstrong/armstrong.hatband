@@ -1,6 +1,3 @@
-from pkgutil import extend_path
-__path__ = extend_path(__path__, __name__)
-
 # Make this a drop-in replacement for Django's built-in Admin
 from django.contrib.admin.helpers import ACTION_CHECKBOX_NAME
 from django.contrib.admin.options import HORIZONTAL, VERTICAL

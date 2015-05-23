@@ -2,4 +2,7 @@ include MANIFEST.in
 include README.rst
 include LICENSE
 include package.json
+recursive-include armstrong/hatband/static *
+recursive-include armstrong/hatband/templates *
 prune build/*
+prune tests
