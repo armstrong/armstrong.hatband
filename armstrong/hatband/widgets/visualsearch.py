@@ -2,8 +2,16 @@ from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.forms import Widget
 from django.template.loader import render_to_string
+try:
+    from django.contrib.staticfiles.templatetags.staticfiles import static
+except ImportError:  # DROP_WITH_DJANGO13
+    if not getattr(settings, "STATIC_URL"):
+        from django.core.exceptions import ImproperlyConfigured
+        raise ImproperlyConfigured(
+            "You're using static files without STATIC_URL in settings.")
 
-from ..utils import static_url
+    def static(url):
+        return ''.join((settings.STATIC_URL, url))
 
 
 class GenericKeyWidget(Widget):
@@ -11,14 +19,14 @@ class GenericKeyWidget(Widget):
 
     if getattr(settings, "ARMSTRONG_ADMIN_PROVIDE_STATIC", True):
         class Media:
-            js = (static_url("visualsearch/dependencies.js"),
-                  static_url("visualsearch/visualsearch.js"),
-                  static_url("generickey.js"),
+            js = (static("visualsearch/dependencies.js"),
+                  static("visualsearch/visualsearch.js"),
+                  static("generickey.js"),
                  )
 
             css = {
-                "all": (static_url("visualsearch/visualsearch.css"),
-                        static_url("hatband/css/generickey.css"),
+                "all": (static("visualsearch/visualsearch.css"),
+                        static("hatband/css/generickey.css"),
                        )
             }
 
